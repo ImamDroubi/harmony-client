@@ -23,7 +23,7 @@ export default function Welcome() {
           !currentUser?
             <AuthButtons/>
           :
-          <UserIcon user={currentUser}/>
+          <UserIcon/>
         }
         </div>
         <div className="hero">

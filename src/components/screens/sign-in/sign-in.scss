@@ -45,7 +45,7 @@
             flex-direction: column;
             align-items: flex-start;
             width: 100%;
-            gap: 1rem;
+            // gap: 1rem;
             position: relative;
             svg{
               color: var.$color-base;
@@ -58,6 +58,7 @@
               color: var.$color-base;
               font-family: var.$font-text;
               font-weight: 400;
+              margin-bottom: 0.7rem;
             }
             input[type = email],input[type = password]{
               width: 100%;
@@ -66,7 +67,7 @@
               outline: none;
               border: 0.1rem solid var.$color-base;
               font-size: 1rem;
-              padding: 0 1.5rem;
+              padding: 0 1.7rem;
               color: var.$color-base-hover;
               font-weight: 400;
               font-family: var.$font-text;
@@ -92,6 +93,11 @@
               background-color: var.$color-base-hover;
               transition: 0.2s;
             }
+          }
+          .error{
+            color: rgb(196, 4, 4);
+            font-size: smaller;
+            margin-top: 5px;
           }
           
         }

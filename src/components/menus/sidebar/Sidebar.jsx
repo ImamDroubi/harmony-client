@@ -3,8 +3,10 @@ import "./sidebar.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSliders,faHeadphones,faGlobe,faPodcast,faBookOpen,faBookQuran,faMountainSun,faFan,faMosquito,faMusic} from '@fortawesome/free-solid-svg-icons'
 import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
 export default function Sidebar() {
   const [showMobileView, setShowMobileView] = useState(false);
+  const {currentUser} = useAuth();
   const checkScreen = ()=>{
     if(window.innerWidth <= 768)setShowMobileView(true);
     else setShowMobileView(false);
@@ -19,7 +21,7 @@ export default function Sidebar() {
   return (
     <>
     {!showMobileView && <div className='sidebar'>
-      <div className="category">
+      {currentUser&&<div className="category">
         <h3 className="title">Personal</h3>
         <ul>
           <li><NavLink to={'/mixing-zone'}><FontAwesomeIcon icon={faSliders} /> Mixing Zone</NavLink></li>
@@ -27,7 +29,7 @@ export default function Sidebar() {
           <li><NavLink to={'/user-tracks'}><FontAwesomeIcon icon={faMusic} /> Tracks</NavLink></li>
           <li><NavLink to={'/user-public'} ><FontAwesomeIcon icon={faGlobe} /> Public Profile</NavLink></li>
         </ul>
-      </div>
+      </div>}
       <div className="category">
         <h3 className="title">Explore</h3>
         <ul>
@@ -43,25 +45,25 @@ export default function Sidebar() {
     </div>}
     
     {showMobileView && <div className="sidebar-mobile">
-      <div className="category">
+      {currentUser&&<div className="category">
           <ul>
             <li><NavLink to={'/mixing-zone'}><FontAwesomeIcon icon={faSliders} /></NavLink></li>
             <li><NavLink to={'/user-combinations'}><FontAwesomeIcon icon={faHeadphones} /></NavLink></li>
             <li><NavLink to={'/user-tracks'}><FontAwesomeIcon icon={faMusic} /></NavLink></li>
             <li><NavLink to={'/user-public'} ><FontAwesomeIcon icon={faGlobe} /></NavLink></li>
           </ul>
-        </div>
-        <div className="category">
-          <ul>
-            <li><NavLink><FontAwesomeIcon icon={faHeadphones} /></NavLink></li>
-            <li><NavLink><FontAwesomeIcon icon={faMountainSun} /></NavLink></li>
-            <li><NavLink><FontAwesomeIcon icon={faPodcast} /></NavLink></li>
-            <li><NavLink><FontAwesomeIcon icon={faBookOpen} /></NavLink></li>
-            <li><NavLink><FontAwesomeIcon icon={faBookQuran} /></NavLink></li>
-            <li><NavLink><FontAwesomeIcon icon={faFan} /></NavLink></li>
-            <li><NavLink><FontAwesomeIcon icon={faMosquito} /></NavLink></li>
-          </ul>
-        </div>
+      </div> } 
+      <div className="category">
+        <ul>
+          <li><NavLink><FontAwesomeIcon icon={faHeadphones} /></NavLink></li>
+          <li><NavLink><FontAwesomeIcon icon={faMountainSun} /></NavLink></li>
+          <li><NavLink><FontAwesomeIcon icon={faPodcast} /></NavLink></li>
+          <li><NavLink><FontAwesomeIcon icon={faBookOpen} /></NavLink></li>
+          <li><NavLink><FontAwesomeIcon icon={faBookQuran} /></NavLink></li>
+          <li><NavLink><FontAwesomeIcon icon={faFan} /></NavLink></li>
+          <li><NavLink><FontAwesomeIcon icon={faMosquito} /></NavLink></li>
+        </ul>
+      </div>
     </div>}
     </>
   )

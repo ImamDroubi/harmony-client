@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser,faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 
-export default function UserIcon({user}) {
+export default function UserIcon() {
+  const {currentUser:user} = useAuth();
   const [menuOpen,setMenuOpen] = useState(false);
   const {logout} = useAuth();
   const handleMenu = ()=>{

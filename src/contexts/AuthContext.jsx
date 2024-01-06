@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 const AuthContext = React.createContext();
 
@@ -7,19 +7,17 @@ export function useAuth(){
 }
 
 export function AuthProvider({children}) {
-  const [currentUser,setCurrentUser] = useState();
+  const [currentUser,setCurrentUser] = useState(undefined);
 
-  function login(){
-    setCurrentUser({
-      _id : "abc123",
-      username : "Imam Droubi",
-      email : "imam.droubi@gmail.com",
-      followers : 55
-    });
+  function login(user){
+    setCurrentUser(user || undefined);
+    localStorage.setItem("currentUser" , JSON.stringify(user));
   }
 
   function logout(){
     setCurrentUser(undefined);
+    document.cookie = 'access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    localStorage.removeItem('currentUser');
   }
 
   const value = {
@@ -27,6 +25,12 @@ export function AuthProvider({children}) {
     login,
     logout
   }
+  useEffect(()=>{
+    let userData = localStorage.getItem('currentUser');
+    if(userData !== "undefined")userData= JSON.parse(userData);
+    const val = userData || null;
+    setCurrentUser(val);
+  },[])
   return (
     <AuthContext.Provider value={value}>
       {children}

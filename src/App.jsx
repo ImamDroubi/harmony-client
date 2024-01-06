@@ -1,10 +1,11 @@
 import './App.css'
+import AnonymousLayout from './components/screens/anonymous-layout/AnonymousLayout';
 import EditProfile from './components/screens/edit-profile/EditProfile';
 import MainLayout from './components/screens/main-layout/MainLayout';
 import MixingZone from './components/screens/mixing-zone/MixingZone';
 import QuickTry from './components/screens/quick-try/QuickTry';
 import SignIn from './components/screens/sign-in/SignIn';
-import SignUp from './components/screens/sign-up/signUp';
+import SignUp from './components/screens/sign-up/SignUp';
 import TopbarLayout from './components/screens/topbar-layout/TopbarLayout';
 import UserCombinations from './components/screens/user-combinations/UserCombinations';
 import UserProfile from './components/screens/user-profile/UserProfile';
@@ -21,8 +22,10 @@ function App() {
           <Route path='/try' element ={<QuickTry/>} />
           
           <Route path='/*' element={<TopbarLayout/>}>
-            <Route path='login' element ={<SignIn/>} />
-            <Route path='register' element ={<SignUp />}/>
+            <Route path='' element={<AnonymousLayout/>}>
+              <Route path='login' element ={<SignIn/>} />
+              <Route path='register' element ={<SignUp />}/>
+            </Route>
             <Route path='user/:id' element ={<UserProfile/>}/>
             <Route path='profile' element ={<EditProfile/>}/>
           </Route>
