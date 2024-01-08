@@ -3,16 +3,19 @@ import AnonymousLayout from './components/screens/anonymous-layout/AnonymousLayo
 import EditProfile from './components/screens/edit-profile/EditProfile';
 import MainLayout from './components/screens/main-layout/MainLayout';
 import MixingZone from './components/screens/mixing-zone/MixingZone';
+import ProtectedRoutes from './components/screens/protected-routes/ProtectedRoutes';
 import QuickTry from './components/screens/quick-try/QuickTry';
 import SignIn from './components/screens/sign-in/SignIn';
 import SignUp from './components/screens/sign-up/SignUp';
 import TopbarLayout from './components/screens/topbar-layout/TopbarLayout';
 import UserCombinations from './components/screens/user-combinations/UserCombinations';
 import UserProfile from './components/screens/user-profile/UserProfile';
+import UserPublic from './components/screens/user-public/UserPublic';
 import UserTracks from './components/screens/user-tracks/UserTracks';
 import Welcome from './components/screens/welcome/Welcome'
-import {AuthProvider} from "./contexts/AuthContext";
-import { Routes,Route, Router } from 'react-router-dom';
+import PublicContent from './components/screens/public-content/PublicContent'
+import { Routes,Route, Router, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 function App() {
 
   return (
@@ -26,14 +29,14 @@ function App() {
               <Route path='login' element ={<SignIn/>} />
               <Route path='register' element ={<SignUp />}/>
             </Route>
-            <Route path='user/:id' element ={<UserProfile/>}/>
+            <Route path='profile/:id' element ={<UserProfile/>}/>
             <Route path='profile' element ={<EditProfile/>}/>
           </Route>
 
           <Route path='/*' element ={<MainLayout />}>
-            <Route path='mixing-zone' element={<MixingZone/>}/>
-            <Route path='user-combinations' element={<UserCombinations/>}/>
-            <Route path='user-tracks' element={<UserTracks/>}/>
+            <Route path='user/*' element={<ProtectedRoutes/>}/>
+            <Route path='public/:category' element={<PublicContent/>}/>
+            
           </Route>
         </Routes>
       </AuthProvider>

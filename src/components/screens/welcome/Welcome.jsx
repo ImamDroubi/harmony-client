@@ -30,7 +30,7 @@ export default function Welcome() {
           <h1>Soundscapes for Inner Peace...</h1>
           <h4><span>Harmonize</span> Your Environment</h4>
           <div className="buttons">
-            <Link to={"/mixing-zone"}><ButtonStrong text="Get Started" width="10rem" height="3.5rem"/></Link>
+            <Link to={currentUser?"/user/mixing-zone":"/public/Nature"}><ButtonStrong text="Get Started" width="10rem" height="3.5rem"/></Link>
             <Link to={"/try"}><ButtonLight text="Quick Try" width="10rem" height="3.5rem"/></Link>
           </div>
         </div>

@@ -24,22 +24,22 @@ export default function Sidebar() {
       {currentUser&&<div className="category">
         <h3 className="title">Personal</h3>
         <ul>
-          <li><NavLink to={'/mixing-zone'}><FontAwesomeIcon icon={faSliders} /> Mixing Zone</NavLink></li>
-          <li><NavLink to={'/user-combinations'}><FontAwesomeIcon icon={faHeadphones} /> Combinations</NavLink></li>
-          <li><NavLink to={'/user-tracks'}><FontAwesomeIcon icon={faMusic} /> Tracks</NavLink></li>
-          <li><NavLink to={'/user-public'} ><FontAwesomeIcon icon={faGlobe} /> Public Profile</NavLink></li>
+          <li><NavLink to={'/user/mixing-zone'}><FontAwesomeIcon icon={faSliders} /> Mixing Zone</NavLink></li>
+          <li><NavLink to={'/user/combinations'}><FontAwesomeIcon icon={faHeadphones} /> Combinations</NavLink></li>
+          <li><NavLink to={'/user/tracks'}><FontAwesomeIcon icon={faMusic} /> Tracks</NavLink></li>
+          <li><NavLink to={'/user/public'} ><FontAwesomeIcon icon={faGlobe} /> Public Profile</NavLink></li>
         </ul>
       </div>}
       <div className="category">
         <h3 className="title">Explore</h3>
         <ul>
-          <li><NavLink><FontAwesomeIcon icon={faHeadphones} /> Combinations</NavLink></li>
-          <li><NavLink><FontAwesomeIcon icon={faMountainSun} /> Nature</NavLink></li>
-          <li><NavLink><FontAwesomeIcon icon={faPodcast} /> Podcasts</NavLink></li>
-          <li><NavLink><FontAwesomeIcon icon={faBookOpen} /> Tales</NavLink></li>
-          <li><NavLink><FontAwesomeIcon icon={faBookQuran} /> Holy Qur'an</NavLink></li>
-          <li><NavLink><FontAwesomeIcon icon={faFan} /> Machines</NavLink></li>
-          <li><NavLink><FontAwesomeIcon icon={faMosquito} /> Animals</NavLink></li>
+          {/* <li><NavLink><FontAwesomeIcon icon={faHeadphones} /> Combinations</NavLink></li> */}
+          <li><NavLink to={'/public/Nature'}><FontAwesomeIcon icon={faMountainSun} /> Nature</NavLink></li>
+          <li><NavLink to={'/public/Podcast'}><FontAwesomeIcon icon={faPodcast} /> Podcasts</NavLink></li>
+          <li><NavLink to={'/public/Tale'}><FontAwesomeIcon icon={faBookOpen} /> Tales</NavLink></li>
+          <li><NavLink to={'/public/Quran'}><FontAwesomeIcon icon={faBookQuran} /> Holy Qur'an</NavLink></li>
+          <li><NavLink to={'/public/Machine'}><FontAwesomeIcon icon={faFan} /> Machines</NavLink></li>
+          <li><NavLink to={'/public/Animal'}><FontAwesomeIcon icon={faMosquito} /> Animals</NavLink></li>
         </ul>
       </div>
     </div>}
@@ -47,21 +47,21 @@ export default function Sidebar() {
     {showMobileView && <div className="sidebar-mobile">
       {currentUser&&<div className="category">
           <ul>
-            <li><NavLink to={'/mixing-zone'}><FontAwesomeIcon icon={faSliders} /></NavLink></li>
-            <li><NavLink to={'/user-combinations'}><FontAwesomeIcon icon={faHeadphones} /></NavLink></li>
-            <li><NavLink to={'/user-tracks'}><FontAwesomeIcon icon={faMusic} /></NavLink></li>
-            <li><NavLink to={'/user-public'} ><FontAwesomeIcon icon={faGlobe} /></NavLink></li>
+            <li><NavLink to={'/user/mixing-zone'}><FontAwesomeIcon icon={faSliders} /></NavLink></li>
+            <li><NavLink to={'/user/combinations'}><FontAwesomeIcon icon={faHeadphones} /></NavLink></li>
+            <li><NavLink to={'/user/tracks'}><FontAwesomeIcon icon={faMusic} /></NavLink></li>
+            <li><NavLink to={'/user/public'}  ><FontAwesomeIcon icon={faGlobe} /></NavLink></li>
           </ul>
       </div> } 
       <div className="category">
         <ul>
-          <li><NavLink><FontAwesomeIcon icon={faHeadphones} /></NavLink></li>
-          <li><NavLink><FontAwesomeIcon icon={faMountainSun} /></NavLink></li>
-          <li><NavLink><FontAwesomeIcon icon={faPodcast} /></NavLink></li>
-          <li><NavLink><FontAwesomeIcon icon={faBookOpen} /></NavLink></li>
-          <li><NavLink><FontAwesomeIcon icon={faBookQuran} /></NavLink></li>
-          <li><NavLink><FontAwesomeIcon icon={faFan} /></NavLink></li>
-          <li><NavLink><FontAwesomeIcon icon={faMosquito} /></NavLink></li>
+          {/* <li><NavLink><FontAwesomeIcon icon={faHeadphones} /></NavLink></li> */}
+          <li><NavLink to={'/public/Nature'}><FontAwesomeIcon icon={faMountainSun} /></NavLink></li>
+          <li><NavLink to={'/public/Podcast'}><FontAwesomeIcon icon={faPodcast} /></NavLink></li>
+          <li><NavLink to={'/public/Tale'}><FontAwesomeIcon icon={faBookOpen} /></NavLink></li>
+          <li><NavLink to={'/public/Quran'}><FontAwesomeIcon icon={faBookQuran} /></NavLink></li>
+          <li><NavLink to={'/public/Machine'}><FontAwesomeIcon icon={faFan} /></NavLink></li>
+          <li><NavLink to={'/public/Animal'}><FontAwesomeIcon icon={faMosquito} /></NavLink></li>
         </ul>
       </div>
     </div>}

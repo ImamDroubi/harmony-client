@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react'
 import "./track.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faSliders,faPlay,faPause,faEllipsisVertical,faPenToSquare,faXmark,faCircleInfo} from '@fortawesome/free-solid-svg-icons';
+import {faSliders,faPlay,faPause,faEllipsisVertical,faPenToSquare,faXmark,faCircleInfo,faUser,faHeart as solidHeart} from '@fortawesome/free-solid-svg-icons';
+import {faHeart as regularHeart} from "@fortawesome/free-regular-svg-icons";
 import OverlayDark from '../../overlays/black/OverlayDark';
 import MenuDropdown from '../../menus/dropdown/MenuDropdown';
 import RangeTime from '../../other/range-time/RangeTime';
@@ -12,6 +13,7 @@ export default function Track({track}) {
   const [optionsMenuOpen,setOptionsMenuOpen] = useState(false);
   const [editTrackPopupOpen,setEditTrackPopupOpen] = useState(false);
   const [warningPopupOpen,setWarningPopupOpen]= useState(false);
+  const [isLiked,setIsLiked] = useState(false);
   const audioRef = useRef();
 
   const handleRemoveTrack = ()=>{
@@ -41,6 +43,9 @@ export default function Track({track}) {
   const removeTrack = <FontAwesomeIcon icon={faXmark} style={{color: "#5dbcbc",}} />
   const optionsDots = <FontAwesomeIcon icon={faEllipsisVertical} size="lg" style={{color: "#ffffff",}} /> ;
   const trackInfo = <FontAwesomeIcon icon={faCircleInfo} /> ;
+  const user = <FontAwesomeIcon icon={faUser} />; 
+  const likeTrack = <FontAwesomeIcon icon={solidHeart} />;
+  const unLikeTrack = <FontAwesomeIcon icon={regularHeart} />; 
 
   const optionsList = [
     <a onClick={handleEditTrack}>{editTrack}Edit Track</a>,
@@ -60,7 +65,8 @@ export default function Track({track}) {
         <div className="rectangle">
           <p>Public</p>
         </div>
-      </div>}
+      </div>
+      }
       {optionsMenuOpen && <MenuDropdown list={optionsList} />}
       <div className="top">
         <h4>{track.title}</h4>
@@ -69,6 +75,20 @@ export default function Track({track}) {
         <RangeTime trackRef={audioRef} setPaused={setIsPaused}/>
         <div className='control' onClick={isPaused?handlePlay:handlePause} >{isPaused?playTrack:pauseTrack}</div>
       </div>
+      {track.is_public&&<div className="likes-section">
+          <div className="user-info">
+            <div>{user}</div>
+            <p>Imam Droubi</p>
+          </div>
+          <div className="like-count">
+            {isLiked?
+            <div onClick={()=>setIsLiked(!isLiked)}>{likeTrack}</div>
+            :
+            <div onClick={()=>setIsLiked(!isLiked)} >{unLikeTrack}</div>
+            }
+            <p>42</p>
+          </div>
+        </div>}
 
       
     </div>

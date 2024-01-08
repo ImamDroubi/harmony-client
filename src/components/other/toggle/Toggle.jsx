@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
 import "./toggle.scss";
-export default function Toggle() {
+export default function Toggle({toggleAction}) {
   const [active,setActive] = useState(false);
   const handleActivate = ()=>{
     setActive(prev=>!prev);
+    toggleAction(prev=>!prev);
   }
   const activeStyleToggle = {
     "justifyContent" : "flex-end",
-    "backgroundColor" : "#5dbcbc"
+    // "backgroundColor" : "#5dbcbc"
   }
   const activeStyleCircle = {
-    "backgroundColor" : "#fff"
+    // "backgroundColor" : "#fff"
   }
   return (
     <div onClick={handleActivate} style={active?activeStyleToggle:null} className='toggle'>

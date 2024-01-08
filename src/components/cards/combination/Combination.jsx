@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import "./combination.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPlay,faEllipsis,faUser,faHeart as solidHeart,faPenToSquare,faXmark,faPause} from "@fortawesome/free-solid-svg-icons";
+import {faPlay,faEllipsis,faEllipsisVertical,faUser,faHeart as solidHeart,faPenToSquare,faXmark,faPause} from "@fortawesome/free-solid-svg-icons";
 import {faHeart as regularHeart} from "@fortawesome/free-regular-svg-icons";
 import sleep from "../../../assets/images/sleep.jpg";
 import OverlayDark from '../../overlays/black/OverlayDark';
@@ -99,6 +99,7 @@ export default function Combination({combination}) {
             :
             <div onClick={toggleLike} >{unLikeCombination}</div>
             }
+            <p>42</p>
           </div>
         </div>
         :

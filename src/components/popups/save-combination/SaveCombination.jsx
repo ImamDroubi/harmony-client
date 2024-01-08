@@ -33,9 +33,8 @@ export default function SaveCombination({openPopup}) {
               
               {/* <input type="file" name="" id="" /> */}
             </div>
-            <div className="progress">
-
-            </div>
+            {/* <div className="progress">
+            </div> */}
           </div>
           
           <input type="submit" value="Save Combination" />

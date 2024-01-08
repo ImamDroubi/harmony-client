@@ -2,7 +2,7 @@
 
 .popup-save-combination{
   width: 40%;
-  height: 90%;
+  height: 95%;
   background-color: var.$color-bg;
   border-radius: 0.5rem;
   color: var.$color-base-hover;
@@ -42,7 +42,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: .7rem;
     width: 60%;
     // height: 50%;
     .form-field{
@@ -96,7 +96,7 @@
       }
       .progress{
         width: 100%;
-        height: 1.5rem;
+        height: 0.5rem;
         // background-color: var.$color-base;
         border: 0.1rem solid var.$color-base;
         border-radius: 0.5rem;

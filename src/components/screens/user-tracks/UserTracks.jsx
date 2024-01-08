@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./user-tracks.scss";
 import ContainerWide from '../../containers/container-wide/ContainerWide';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,7 +20,12 @@ import rain_s from "../../../assets/sounds/rain.mp3";
 import Track from '../../cards/track/Track';
 import CustomSelect from '../../menus/custom-select/CustomSelect';
 import UploadTrack from '../../popups/upload-track/UploadTrack';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '../../../contexts/AuthContext';
+import { getUserResources } from '../../../apiCalls/tracks';
 export default function UserTracks() {
+  const {currentUser} = useAuth();
+  const [user,setUser] = useState();
   const [uploadTrackPopupOpen, setUploadTrackPopupOpen] = useState(false);
   const tracks = [
     {
@@ -98,6 +103,26 @@ export default function UserTracks() {
     "Nature","Animals","Night"
   ]
   const uploadTrack = <FontAwesomeIcon icon={faUpload} />;
+
+  const{isPending, isError, data, error} = useQuery({ // data here contains tracks
+    queryKey: ['tracks', user?.id],
+    queryFn: getUserResources,
+    enabled : !!user
+  });
+  const {
+    isPending:isPending_categories,
+    isError: isError_categories,
+    data:data_categories,
+    error:error_categories
+  } = useQuery({
+    queryKey:['categories', user?.id],
+    queryFn : getUserResources,
+    enabled : !!user
+  })
+  useEffect(()=>{
+    setUser(currentUser);
+  },[currentUser])
+  if(!user)return "Loading...";
   return (
     <div className='user-tracks'>
       <ContainerWide>
@@ -118,12 +143,6 @@ export default function UserTracks() {
             <div className="category">
               <p>Filter: </p>
               <CustomSelect list={categories} setCurrentCategory ={setCurrentCategory}/>
-              {/* <select onChange={(e)=>handleCategoryChange(e)} name="track-category" id="track-category">
-                <option>Select Category</option>
-                {categories.map((category,ind)=>{
-                  return <option value={category} key={ind}>{category}</option>
-                })}
-              </select> */}
             </div>
           </div>
           

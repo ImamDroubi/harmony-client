@@ -24,17 +24,22 @@
         .track-flexible{
           width: 48%;
         }
-        .user-tracks{
-          .tracks{
-            gap: 0;
-            row-gap: 2rem;
-            .track{
-              width: 48%;
-            }
+        .tracks{
+          gap: 0;
+          row-gap: 2rem;
+          .track{
+            width: 48%;
           }
-          .upload{
-            right: 1.5rem;
+        }
+        .combinations{
+          gap: 2rem;
+          row-gap: 2rem;
+          .combination{
+            width: 45%;
           }
+        }
+        .upload{
+          right: 1.5rem;
         }
       }
       @media screen and (max-width: var.$screen-tablet){
@@ -53,11 +58,14 @@
         .track-flexible{
           width: 100%;
         }
-        .user-tracks{
-          .tracks{
-            .track{
-              width: 100%;
-            }
+        .tracks{
+          .track{
+            width: 100%;
+          }
+        }
+        .combinations{
+          .combination{
+            width: 100%;
           }
         }
       }

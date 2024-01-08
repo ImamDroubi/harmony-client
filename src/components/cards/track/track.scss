@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 7rem;
+  height: 9rem;
   position: relative;
   animation-name: slide-down;
   animation-duration: 0.5s;
@@ -105,6 +105,53 @@
         width: 2rem;
         height: 2rem;
         font-size: 1rem;
+      }
+    }
+  }
+  .likes-section{
+    display: flex;
+    justify-content: flex-start;
+    .user-info{
+      width: 7rem;
+      background-color: rgba($color: var.$color-dark, $alpha: 0.5);
+      display: flex;
+      gap: 0.2rem;
+      padding: 0.2rem;
+      border-radius: 0.3rem 0 0 0.3rem;
+      bottom: 0.5rem;
+      position: absolute;
+      right: 0;
+      padding-left: 0.5rem;
+      cursor: pointer;
+      &:hover{
+        background-color: rgba($color: var.$color-dark, $alpha: 0.8);
+        text-decoration: underline;
+        color: var.$color-light;
+      }
+      div{
+        color: var.$color-light;
+        font-size: 0.7rem;
+      }
+      p{
+        font-size: 0.8rem;
+        color: var.$color-light;
+        
+      }
+    }
+    .like-count{
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      div{
+        color: var.$color-light;
+        font-size: 2rem;
+        cursor: pointer;
+      }
+      p{
+        color: var.$color-light;
+        font-size: 1.2rem;
+        font-weight: bold;
+        transform: translateY(-2px);
       }
     }
   }

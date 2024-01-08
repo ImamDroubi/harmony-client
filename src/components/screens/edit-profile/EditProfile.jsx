@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUser,faEnvelope,faKey} from '@fortawesome/free-solid-svg-icons';
 import person1 from '../../../assets/images/person1.jpg';
 import { useAuth } from '../../../contexts/AuthContext';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 export default function EditProfile() {
   const {currentUser} = useAuth();
   const [username,setUserName] = useState();
@@ -15,6 +15,9 @@ export default function EditProfile() {
     setUserName(currentUser?.username)
     setEmail(currentUser?.email);
   },[currentUser])
+  if(!currentUser){
+    return <Navigate to="/" replace />
+  }
   return (
     <div className='edit-profile'>
       <ContainerWide>
