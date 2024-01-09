@@ -22,7 +22,7 @@ import CustomSelect from '../../menus/custom-select/CustomSelect';
 import UploadTrack from '../../popups/upload-track/UploadTrack';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../../contexts/AuthContext';
-import { getUserResources } from '../../../apiCalls/tracks';
+import { getUserResources } from '../../../apiCalls/resources';
 export default function UserTracks() {
   const {currentUser} = useAuth();
   const [user,setUser] = useState();

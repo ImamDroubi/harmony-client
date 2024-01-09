@@ -19,7 +19,7 @@ import waterfall_s from "../../../assets/sounds/waterfall.mp3";
 import thunder_s from "../../../assets/sounds/thunder.mp3";
 import rain_s from "../../../assets/sounds/rain.mp3";
 import { useQuery } from '@tanstack/react-query';
-import { getUserResources } from '../../../apiCalls/tracks';
+import { getUserResources } from '../../../apiCalls/resources';
 import { useAuth } from '../../../contexts/AuthContext';
 import CustomSelect from '../../menus/custom-select/CustomSelect';
 export default function UserCombinations() {

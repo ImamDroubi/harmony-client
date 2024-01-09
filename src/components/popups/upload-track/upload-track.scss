@@ -108,16 +108,17 @@
         font-family: var.$font-text;
         font-weight: 400;
       }
-      button{
+      .upload-track-button{
         width: 100%;
         background-color: var.$color-base;
         border: none;
         outline: none;
         height: 1.7rem;
-        font-weight: 500;
+        font-weight: 300;
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 0.2rem;
         border-radius: 0.5rem;
         color: var.$color-light;
         cursor: pointer;
@@ -143,11 +144,15 @@
       outline: none;
       border: none;
       border-radius: 0.5rem;
-      margin-top: 1rem;
+      // margin-top: 1rem;
       cursor: pointer;
       &:hover,&:focus{
         background-color: var.$color-base-hover;
         transition: 0.2s;
+      }
+      &:disabled{
+        background-color: gray;
+        cursor: default;
       }
     }
     
@@ -174,7 +179,7 @@
           height: 100%;
         }
       }
-      button{
+      .upload-image-button{
         position: absolute;
         z-index: 2;
         padding: 0.5rem 1rem;
