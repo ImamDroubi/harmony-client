@@ -35,11 +35,11 @@ export default function Sidebar() {
         <ul>
           {/* <li><NavLink><FontAwesomeIcon icon={faHeadphones} /> Combinations</NavLink></li> */}
           <li><NavLink to={'/public/Nature'}><FontAwesomeIcon icon={faMountainSun} /> Nature</NavLink></li>
-          <li><NavLink to={'/public/Podcast'}><FontAwesomeIcon icon={faPodcast} /> Podcasts</NavLink></li>
-          <li><NavLink to={'/public/Tale'}><FontAwesomeIcon icon={faBookOpen} /> Tales</NavLink></li>
+          <li><NavLink to={'/public/Podcasts'}><FontAwesomeIcon icon={faPodcast} /> Podcasts</NavLink></li>
+          <li><NavLink to={'/public/Tales'}><FontAwesomeIcon icon={faBookOpen} /> Tales</NavLink></li>
           <li><NavLink to={'/public/Quran'}><FontAwesomeIcon icon={faBookQuran} /> Holy Qur'an</NavLink></li>
-          <li><NavLink to={'/public/Machine'}><FontAwesomeIcon icon={faFan} /> Machines</NavLink></li>
-          <li><NavLink to={'/public/Animal'}><FontAwesomeIcon icon={faMosquito} /> Animals</NavLink></li>
+          <li><NavLink to={'/public/Machines'}><FontAwesomeIcon icon={faFan} /> Machines</NavLink></li>
+          <li><NavLink to={'/public/Animals'}><FontAwesomeIcon icon={faMosquito} /> Animals</NavLink></li>
         </ul>
       </div>
     </div>}
@@ -57,11 +57,11 @@ export default function Sidebar() {
         <ul>
           {/* <li><NavLink><FontAwesomeIcon icon={faHeadphones} /></NavLink></li> */}
           <li><NavLink to={'/public/Nature'}><FontAwesomeIcon icon={faMountainSun} /></NavLink></li>
-          <li><NavLink to={'/public/Podcast'}><FontAwesomeIcon icon={faPodcast} /></NavLink></li>
-          <li><NavLink to={'/public/Tale'}><FontAwesomeIcon icon={faBookOpen} /></NavLink></li>
+          <li><NavLink to={'/public/Podcasts'}><FontAwesomeIcon icon={faPodcast} /></NavLink></li>
+          <li><NavLink to={'/public/Tales'}><FontAwesomeIcon icon={faBookOpen} /></NavLink></li>
           <li><NavLink to={'/public/Quran'}><FontAwesomeIcon icon={faBookQuran} /></NavLink></li>
-          <li><NavLink to={'/public/Machine'}><FontAwesomeIcon icon={faFan} /></NavLink></li>
-          <li><NavLink to={'/public/Animal'}><FontAwesomeIcon icon={faMosquito} /></NavLink></li>
+          <li><NavLink to={'/public/Machines'}><FontAwesomeIcon icon={faFan} /></NavLink></li>
+          <li><NavLink to={'/public/Animals'}><FontAwesomeIcon icon={faMosquito} /></NavLink></li>
         </ul>
       </div>
     </div>}

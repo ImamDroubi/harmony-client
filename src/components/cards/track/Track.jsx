@@ -53,14 +53,14 @@ export default function Track({track}) {
     // <a>{trackInfo} Track Details</a>
   ]
   return (
-    <div className='track' style={{backgroundImage:`url(${track.img})`}}>
+    <div className='track' style={{backgroundImage:`url(${track.photoUrl})`}}>
       {editTrackPopupOpen && <EditTrack track={track} openPopup={setEditTrackPopupOpen}/>}
       {/* Deletion Function */}
       {warningPopupOpen && <Warning openPopup={setWarningPopupOpen} text='Are You sure you want to delete this track?' confirm={()=>setWarningPopupOpen(false)}/>}
       <OverlayDark />
-      <audio ref={audioRef} id={`sound${track.id}`} src={track.sound}></audio> 
+      <audio ref={audioRef} id={`sound${track.id}`} src={track.url}></audio> 
       <div onClick={handleOpenOptionsMenu} className="options">{optionsDots}</div>
-      {track.is_public&&<div className="public-badge">
+      {track.isPublic&&<div className="public-badge">
         <div className="triangle"></div>
         <div className="rectangle">
           <p>Public</p>
@@ -69,13 +69,13 @@ export default function Track({track}) {
       }
       {optionsMenuOpen && <MenuDropdown list={optionsList} />}
       <div className="top">
-        <h4>{track.title}</h4>
+        <h4>{track.name}</h4>
       </div>
       <div className="bottom">
         <RangeTime trackRef={audioRef} setPaused={setIsPaused}/>
         <div className='control' onClick={isPaused?handlePlay:handlePause} >{isPaused?playTrack:pauseTrack}</div>
       </div>
-      {track.is_public&&<div className="likes-section">
+      {track.isPublic&&<div className="likes-section">
           <div className="user-info">
             <div>{user}</div>
             <p>Imam Droubi</p>

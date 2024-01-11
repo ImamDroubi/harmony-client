@@ -9,6 +9,8 @@ import {useAuth} from "../../../contexts/AuthContext";
 import {getFileRef, uploadFileResumable } from '../../../apiCalls/uploadFile';
 import {CircularProgress, LinearProgress } from '@mui/material';
 import { deleteObject, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 export default function UploadTrack({openPopup}) {
   const {currentUser} = useAuth()
   const trackName = useRef();
@@ -24,6 +26,7 @@ export default function UploadTrack({openPopup}) {
   const [imageUploading, setImageUploading] = useState(false);
   const [trackUploading, setTrackUploading] = useState(false);
   const [trackUploadProgress,setTrackUploadProgress] = useState(0);
+  const [trackDuration,setTrackDuration] = useState(0);
 
   const [formSubmitting, setFormSubmitting] = useState(false);
 
@@ -33,6 +36,7 @@ export default function UploadTrack({openPopup}) {
   useEffect(()=>{
     uploadTrack();
   },[currentTrack])
+
   const uploadImage = async ()=>{
     if(currentImage == null){
       return; 
@@ -69,7 +73,7 @@ export default function UploadTrack({openPopup}) {
     if(trackUploadRef){
       try{
         const res = deleteObject(trackUploadRef);
-        setImageUrl(null);
+        setTrackUrl(null);
       }catch(error){
         console.log(error);
       }
@@ -106,10 +110,58 @@ export default function UploadTrack({openPopup}) {
     }
     );
   }
+  useEffect(()=>{
+    if(trackUrl == null)return; 
+    const audio = document.createElement("audio");
+    audio.src = trackUrl; 
+    audio.addEventListener("loadedmetadata", ()=>{
+      setTrackDuration(audio.duration);
+    });
+    audio.play().then(()=>{
+      audio.pause();
+    }).catch(err=>console.log(err));
+  },[trackUrl])
+
+  const createTrack = useMutation({
+    mutationFn : (payload)=>{
+      return axios.post(`/tracks`, payload);
+    },
+    onMutate:(variables)=>{
+      console.log(variables);
+    },
+    onError:(error,variables,context)=>{
+      console.log(error);
+    },
+    onSuccess:(data,variables,context)=>{
+      console.log(data);
+      console.log("Created Successfully");
+      postSubmission();
+    }
+  })
   const submit = (e)=>{
     e.preventDefault();
     setFormSubmitting(true);
+    if(!trackName.current.value
+      || !trackCategory.current.value
+      || !trackUrl
+      || !trackDuration){
+        return; 
+      }
+    const payload = {
+      name : trackName.current.value,
+      category : trackCategory.current.value,
+      url : trackUrl,
+      photoUrl : imageUrl,
+      duration : trackDuration
+    }
+    createTrack.mutate(payload);
   }
+  const postSubmission = ()=>{
+    setFormSubmitting(false);
+    console.log("Track Uploaded Successfully...");
+    openPopup(false);
+  }
+
   return (
     <PopupLayout>
       <div className="popup-upload-track">
@@ -117,7 +169,7 @@ export default function UploadTrack({openPopup}) {
         <div className="title">
           <h2>Upload A New Track</h2>
         </div>
-        <form action="">
+        <form onSubmit={submit} action="">
         <div className="file-field">
             <label>Track: {currentTrack?.name}</label>
             <input onChange={(e)=>setCurrentTrack(e.target.files[0])} type="file" name="file" id="file" accept='audio/*' hidden/>
@@ -135,7 +187,7 @@ export default function UploadTrack({openPopup}) {
           <div className="form-field">
             <label>Track Image:</label>
             <div className="photo">
-              <input onChange={(e)=>setCurrentImage(e.target.files[0])} type="file" name="image" id="image"  hidden/>
+              <input onChange={(e)=>setCurrentImage(e.target.files[0])} type="file" name="image" id="image" accept="image/*"  hidden/>
               {!imageUploading&&<label htmlFor='image'  className='upload-image-button'>Upload</label>}
               <div className="preview">
                 <img src={imageUrl || track} alt="" />

@@ -107,16 +107,16 @@ export default function TrackFlexible({track}) {
   },[])
 
   return (
-    <div className='track-flexible' style={{backgroundImage:`url(${track.img})`}}> 
+    <div className='track-flexible' style={{backgroundImage:`url(${track.photoUrl})`}}> 
     {editTrackPopupOpen && <EditTrack track={track} openPopup={setEditTrackPopupOpen}/>}
     {warningPopupOpen && <Warning openPopup={setWarningPopupOpen} text='Are You sure you want to remove the track from the mixing zone?' confirm={()=>setWarningPopupOpen(false)}/>}
       <OverlayDark />
-      <audio ref={audioRef} id={`sound${track.id}`} src={track.sound}></audio> 
+      <audio ref={audioRef} id={`sound${track.id}`} src={track.url}></audio> 
       {/* Remove the id  */}
       <div onClick={handleOpenOptionsMenu} className="options">{optionsDots}</div>
       {optionsMenuOpen && <MenuDropdown list={optionsList} />}
       <div className="left">
-        <h4>{track.title}</h4>
+        <h4>{track.name}</h4>
         <div className="track-progress">
           <RangeTime setPaused={setIsPaused} trackRef={audioRef} />
         </div>

@@ -209,15 +209,23 @@
           transition: 0.2s;
         }
       }
+      &:disabled{
+        background-color: gray;
+        cursor: default;
+        &:hover{
+          background-color: gray;
+          border: 0.1rem solid gray;
+        }
+      }
     }
   }
   form{
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    margin-top: 1rem;
-    width: 90%;
+    width: 60%;
     // height: 50%;
     .form-field{
       display: flex;
@@ -280,22 +288,22 @@
         font-family: var.$font-text;
         font-weight: 400;
       }
-      button{
+      .upload-track-button{
         width: 100%;
         background-color: var.$color-base;
         border: none;
         outline: none;
-        height: 1.5rem;
-        font-weight: 500;
+        height: 1.7rem;
+        font-weight: 300;
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 0.2rem;
         border-radius: 0.5rem;
         color: var.$color-light;
         cursor: pointer;
-        &:hover,&:focus{
+        &:hover{
           background-color: var.$color-base-hover;
-          transition: 0.2s;
         }
       }
       .progress{
@@ -316,11 +324,15 @@
       outline: none;
       border: none;
       border-radius: 0.5rem;
-      margin-top: 1rem;
+      // margin-top: 1rem;
       cursor: pointer;
       &:hover,&:focus{
         background-color: var.$color-base-hover;
         transition: 0.2s;
+      }
+      &:disabled{
+        background-color: gray;
+        cursor: default;
       }
     }
     
@@ -347,7 +359,7 @@
           height: 100%;
         }
       }
-      button{
+      .upload-image-button{
         position: absolute;
         z-index: 2;
         padding: 0.5rem 1rem;
@@ -361,9 +373,8 @@
         font-weight: 500;
         font-family: var.$font-text;
         display: flex;
-        &:hover,&:focus{
+        &:hover{
           background-color: rgba($color: var.$color-light, $alpha: 0.7);
-          transition: 0.2s;
         }
       }
     }

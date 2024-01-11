@@ -21,72 +21,18 @@ import MixingControls from '../../menus/mixing-controls/MixingControls';
 import AddToMixingZone from '../../popups/add-to-mixing-zone/AddToMixingZone';
 import SaveCombination from '../../popups/save-combination/SaveCombination';
 import Warning from '../../popups/warning/Warning';
+import { getSpecificTracks } from '../../../apiCalls/resources';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+
+const currentStorageTracks = JSON.parse(localStorage.getItem('storageTracks') || "[]");
 export default function MixingZone() {
   const [isPaused, setIsPaused] = useState(true);
   const [isMuted,setIsMuted] = useState(false);
   const [showAddTrackPopup,setShowAddTrackPopup] = useState(false);
   const [showSaveCombinationPopup,setShowSaveCombinationPopup] = useState(false);
   const [showWarningPopup,setShowWarningPopup] = useState(false);
-  const sounds = [
-    {
-      "id" : "abc1234",
-      "title" : "Ocean",
-      "sound" : ocean_s,
-      "img" : ocean,
-      "volume" : 50,
-      "repeat" : true,
-      "mute" : false
-    },
-    {
-      "id" : "abc1235",
-      "title" : "Birds",
-      "sound" : birds_s,
-      "img" : birds,
-      "volume" : 50,
-      "repeat" : true,
-      "mute" : false
-    },
-    {
-      "id" : "abc1236",
-      "title" : "Campfire",
-      "sound" : campfire_s,
-      "img" : campfire,
-      "volume" : 50,
-      "repeat" : true,
-      "mute" : false
-    },
-    {
-      "id" : "abc1237",
-      "title" : "Thunder",
-      "sound" : thunder_s,
-      "img" : thunder,
-      "volume" : 50,
-      "repeat" : true,
-      "mute" : false
-    },
-    {
-      "id" : "abc1238",
-      "title" : "Waterfall",
-      "sound" : waterfall_s,
-      "img" : waterfall,
-      "volume" : 50,
-      "repeat" : true,
-      "mute" : false
-    },
-    {
-      "id" : "abc1239",
-      "title" : "Rain",
-      "sound" : rain_s,
-      "img" : rain,
-      "volume" : 50,
-      "repeat" : true,
-      "mute" : false
-    },
-    
-    
-  ]
-  const [tracks , setTracks] = useState(sounds);
-  
+  const [mixingTracks , setMixingTracks] = useState(currentStorageTracks);
+  const [tracks,setTracks]= useState([]);
   const playAll = ()=>{
     tracks.map((track)=>{
       document.getElementById(`sound${track.id}`).play();
@@ -117,7 +63,8 @@ export default function MixingZone() {
     })
   }
   const clearAll = ()=>{
-    setTracks([]);
+    setMixingTracks([]);
+    localStorage.removeItem('storageTracks');
     setIsMuted(false);
     setIsPaused(true);
   }
@@ -137,12 +84,24 @@ export default function MixingZone() {
     "showWarningPopup": setShowWarningPopup
   }
 
+  const queryClient = useQueryClient();
+  const{isSuccess, isPending, isError, data,refetch ,error} = useQuery({ 
+    queryKey: ['mixingTracks'],
+    queryFn: async ()=>getSpecificTracks(mixingTracks)
+  });
   useEffect(()=>{
+    localStorage.setItem('storageTracks', JSON.stringify(mixingTracks));
+    queryClient.invalidateQueries({queryKey:['mixingTracks']});
+    refetch();
+  },[mixingTracks]);
 
-  },[tracks])
+  useEffect(()=>{
+    setMixingTracks(data.data);
+  },[isSuccess])
+  if(isError) return "Something went wrong...";
   return (
     <div className='mixing-zone'>
-      {showAddTrackPopup&&<AddToMixingZone openPopup = {setShowAddTrackPopup} />}
+      {showAddTrackPopup&&<AddToMixingZone openPopup = {setShowAddTrackPopup} mixingTracks={mixingTracks} setMixingTracks={setMixingTracks} />}
       {showSaveCombinationPopup&&<SaveCombination openPopup = {setShowSaveCombinationPopup}/>}
       {showWarningPopup&&<Warning openPopup={setShowWarningPopup} text='Are you sure you want to clear the mixing zone?' confirm={clearAll}/> }
       <ContainerWide>
@@ -159,6 +118,10 @@ export default function MixingZone() {
           </div>
         </header>
         <MixingControls {...props} />
+        {
+        isPending? 
+        <p>Loading...</p>
+        :
         <div className="tracks">
           {
             tracks.map((track)=>{
@@ -167,6 +130,7 @@ export default function MixingZone() {
           }
           {!tracks.length && <h3>There are no tracks in the mixing zone... </h3>}
         </div>
+        }
         
       </ContainerWide>
     </div>
