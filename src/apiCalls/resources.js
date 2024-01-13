@@ -19,3 +19,30 @@ export const getSpecificTracks = async(mixingTracks)=>{
   }
 }
 
+export const publishUserResource = async(type,resourceId)=>{
+  return await axios.patch(`/${type}/${resourceId}`, {
+    isPublic : true
+  });
+}
+export const unpublishUserResource = async(type,resourceId)=>{
+  return await axios.patch(`/${type}/${resourceId}`, {
+    isPublic : false
+  });
+}
+
+export const toggleLikeResource = async(type,resourceId)=>{
+  return await axios.post(`/likes/${type}/${resourceId}`)
+}
+
+export const deleteUserResource = async(type,resourceId)=>{
+  return await axios.delete(`/${type}/${resourceId}`);
+}
+
+export const getPublicUserResource = async(type,userId)=>{
+  return await axios.get(`/${type}/public/user/${userId}`);
+}
+
+export const  getPublicResourceByCategory = async(type,category)=>{
+  console.log("Sending...");
+  return axios.get(`/${type}/public/${category}`);
+}

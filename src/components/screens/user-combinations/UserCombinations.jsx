@@ -27,311 +27,52 @@ export default function UserCombinations() {
   const [user,setUser] = useState();
   const [categories,setCategories] = useState(["sleep","study"]);
   const [currentCategory,setCurrentCategory] = useState();
-  const combinations = [
-    {
-      "id" : "comb1",
-      "owner_id" : "user1",
-      "name" : "Bed Time",
-      "photo" : sleep,
-      "description" : "Combination for bed time ",
-      "like_count" : 0,
-      "is_public" : false,
-      "category" : "sleep",
-      'tracks': [
-        {
-          "id" : "abc1234",
-          "title" : "Ocean",
-          "sound" : ocean_s,
-          "img" : ocean,
-          "volume" : 50,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1235",
-          "title" : "Birds",
-          "sound" : birds_s,
-          "img" : birds,
-          "volume" : 50,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1237",
-          "title" : "Thunder",
-          "sound" : thunder_s,
-          "img" : thunder,
-          "volume" : 10,
-          "repeat" : true,
-          "mute" : false
+  const [combinations,setCombinations] = useState([]);
+
+  const{isPending, isError, data, isSuccess, error} = useQuery({ // data here contains combinations
+    queryKey: ['combinations', user?.id],
+    queryFn: getUserResources,
+    enabled : !!user
+  });
+  const {
+    isPending:isPending_categories,
+    isError: isError_categories,
+    data:data_categories,
+    error:error_categories
+  } = useQuery({
+    queryKey:['categories', user?.id],
+    queryFn : getUserResources,
+    enabled : !!user
+  })
+  useEffect(()=>{
+    setUser(currentUser);
+  },[currentUser])
+
+  useEffect(()=>{
+    const combs = data?.data?.map(comb=>{
+      const {Tracks, User, ...details} = comb; 
+      const tracks = Tracks?.map(track=>{
+        const {Tracks_Combination, ...track_details} = track; 
+        return {
+          ...track_details,
+          volume : Tracks_Combination.volume
         }
-      ]
-      
-    },
-    {
-      "id" : "comb1",
-      "owner_id" : "user1",
-      "name" : "Bed Time",
-      "photo" : sleep,
-      "description" : "Combination for bed time ",
-      "like_count" : 0,
-      "is_public" : false,
-      "category" : "sleep",
-      'tracks': [
-        {
-          "id" : "abc1234",
-          "title" : "Ocean",
-          "sound" : ocean_s,
-          "img" : ocean,
-          "volume" : 50,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1235",
-          "title" : "Birds",
-          "sound" : birds_s,
-          "img" : birds,
-          "volume" : 50,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1237",
-          "title" : "Thunder",
-          "sound" : thunder_s,
-          "img" : thunder,
-          "volume" : 10,
-          "repeat" : true,
-          "mute" : false
-        }
-      ]
-      
-    },
-    {
-      "id" : "comb1",
-      "owner_id" : "user1",
-      "name" : "Bed Time",
-      "photo" : sleep,
-      "description" : "Combination for bed time ",
-      "like_count" : 0,
-      "is_public" : false,
-      "category" : "sleep",
-      'tracks': [
-        {
-          "id" : "abc1234",
-          "title" : "Ocean",
-          "sound" : ocean_s,
-          "img" : ocean,
-          "volume" : 50,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1235",
-          "title" : "Birds",
-          "sound" : birds_s,
-          "img" : birds,
-          "volume" : 50,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1237",
-          "title" : "Thunder",
-          "sound" : thunder_s,
-          "img" : thunder,
-          "volume" : 10,
-          "repeat" : true,
-          "mute" : false
-        }
-      ]
-      
-    },
-    {
-      "id" : "comb1",
-      "owner_id" : "user1",
-      "name" : "Bed Time",
-      "photo" : sleep,
-      "description" : "Combination for bed time ",
-      "like_count" : 0,
-      "is_public" : false,
-      "category" : "sleep",
-      'tracks': [
-        {
-          "id" : "abc1234",
-          "title" : "Ocean",
-          "sound" : ocean_s,
-          "img" : ocean,
-          "volume" : 50,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1235",
-          "title" : "Birds",
-          "sound" : birds_s,
-          "img" : birds,
-          "volume" : 50,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1237",
-          "title" : "Thunder",
-          "sound" : thunder_s,
-          "img" : thunder,
-          "volume" : 10,
-          "repeat" : true,
-          "mute" : false
-        }
-      ]
-      
-    },
-    {
-      "id" : "comb1",
-      "owner_id" : "user1",
-      "name" : "Bed Time",
-      "photo" : sleep,
-      "description" : "Combination for bed time ",
-      "like_count" : 0,
-      "is_public" : false,
-      "category" : "sleep",
-      'tracks': [
-        {
-          "id" : "abc1234",
-          "title" : "Ocean",
-          "sound" : ocean_s,
-          "img" : ocean,
-          "volume" : 50,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1235",
-          "title" : "Birds",
-          "sound" : birds_s,
-          "img" : birds,
-          "volume" : 50,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1237",
-          "title" : "Thunder",
-          "sound" : thunder_s,
-          "img" : thunder,
-          "volume" : 10,
-          "repeat" : true,
-          "mute" : false
-        }
-      ]
-      
-    },
-    {
-      "id" : "comb1",
-      "owner_id" : "user1",
-      "name" : "Bed Time",
-      "photo" : sleep,
-      "description" : "Combination for bed time ",
-      "like_count" : 0,
-      "is_public" : false,
-      "category" : "sleep",
-      'tracks': [
-        {
-          "id" : "abc1234",
-          "title" : "Ocean",
-          "sound" : ocean_s,
-          "img" : ocean,
-          "volume" : 50,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1235",
-          "title" : "Birds",
-          "sound" : birds_s,
-          "img" : birds,
-          "volume" : 50,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1237",
-          "title" : "Thunder",
-          "sound" : thunder_s,
-          "img" : thunder,
-          "volume" : 10,
-          "repeat" : true,
-          "mute" : false
-        }
-      ]
-      
-    },
-    {
-      "id" : "comb2",
-      "owner_id" : "user1",
-      "name" : "Study Time",
-      "photo" : study,
-      "description" : "Combination for studying my math exam for the college and bla bla bla ",
-      "like_count" : 2,
-      "is_public" : true,
-      "category" : "study",
-      'tracks': [
-        {
-          "id" : "abc1236",
-          "title" : "Campfire",
-          "sound" : campfire_s,
-          "img" : campfire,
-          "volume" : 100,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1238",
-          "title" : "Waterfall",
-          "sound" : waterfall_s,
-          "img" : waterfall,
-          "volume" : 0,
-          "repeat" : true,
-          "mute" : false
-        },
-        {
-          "id" : "abc1239",
-          "title" : "Rain",
-          "sound" : rain_s,
-          "img" : rain,
-          "volume" : 0,
-          "repeat" : true,
-          "mute" : false
-        }
-      ]
-      
-    }
-  ]
-  /*
-    TODO 
-    Add show all buttons that would show all the combination in some category 
-  */
-    const{isPending, isError, data, error} = useQuery({ // data here contains tracks
-      queryKey: ['combinations', user?.id],
-      queryFn: getUserResources,
-      enabled : !!user
-    });
-    const {
-      isPending:isPending_categories,
-      isError: isError_categories,
-      data:data_categories,
-      error:error_categories
-    } = useQuery({
-      queryKey:['categories', user?.id],
-      queryFn : getUserResources,
-      enabled : !!user
+      })
+
+      return {
+        ...details,
+        tracks : tracks, 
+        user: User
+      }
     })
-    useEffect(()=>{
-      setUser(currentUser);
-    },[currentUser])
-    if(!user)return "Loading...";
+    setCombinations(combs);
+  },[isSuccess])
+
+
+  if(!user)return "Loading...";
+  if(isPending || isPending_categories) return "Loading...";
+  if(isError) return `Error: ${error.message}`
+  if(isError_categories) return `Error: ${error_categories.message}`
   return (
     <div className='user-combinations'>
       <ContainerWide>
@@ -374,9 +115,9 @@ export default function UserCombinations() {
             </div>
           })}
         </div> */}
-        {/*=======================*/}
+        {/*======================= */}
         <div className="combinations">
-          {combinations.map(comb=>{
+          {combinations?.map(comb=>{
             return !currentCategory || currentCategory === "All" || comb.category === currentCategory?<Combination combination={comb}/>:null
           })}
         </div>

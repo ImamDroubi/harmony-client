@@ -1,24 +1,51 @@
 import React, { useRef, useState } from 'react'
 import "./track.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faSliders,faPlay,faPause,faEllipsisVertical,faPenToSquare,faXmark,faCircleInfo,faUser,faHeart as solidHeart} from '@fortawesome/free-solid-svg-icons';
+import {faSliders,faPlay,faGlobe,faUserSecret,faPause,faEllipsisVertical,faPenToSquare,faXmark,faCircleInfo,faUser,faHeart as solidHeart} from '@fortawesome/free-solid-svg-icons';
 import {faHeart as regularHeart} from "@fortawesome/free-regular-svg-icons";
 import OverlayDark from '../../overlays/black/OverlayDark';
 import MenuDropdown from '../../menus/dropdown/MenuDropdown';
 import RangeTime from '../../other/range-time/RangeTime';
 import EditTrack from '../../popups/edit-track/EditTrack';
 import Warning from "../../popups/warning/Warning";
+import { Link } from 'react-router-dom';
+import { deleteUserResource, publishUserResource, toggleLikeResource, unpublishUserResource } from '../../../apiCalls/resources';
+import { useQueryClient } from '@tanstack/react-query';
 export default function Track({track}) {
   const [isPaused,setIsPaused] = useState(true);
   const [optionsMenuOpen,setOptionsMenuOpen] = useState(false);
   const [editTrackPopupOpen,setEditTrackPopupOpen] = useState(false);
   const [warningPopupOpen,setWarningPopupOpen]= useState(false);
-  const [isLiked,setIsLiked] = useState(false);
+  const [publishWarningPopup,setPublishWarningPopup] = useState(false);
+  const [unpublishWarningPopup,setUnpublishWarningPopup] = useState(false);
+  const [isLiked,setIsLiked] = useState(track.isLiked);
+  const [likes,setLikes]= useState(track.likes);
   const audioRef = useRef();
+  const queryClient = useQueryClient();
 
-  const handleRemoveTrack = ()=>{
+  const handleDeleteTrack = ()=>{
     setWarningPopupOpen(true);
     setOptionsMenuOpen(false);
+  }
+  const deletionConfirmed = ()=>{
+    setWarningPopupOpen(false);
+    const response = deleteUserResource("tracks", track.id);
+  }
+  const handlePublishTrack = ()=>{
+    setPublishWarningPopup(true);
+    setOptionsMenuOpen(false);
+  }
+  const publishConfirmed = ()=>{
+    setPublishWarningPopup(false);
+    const response = publishUserResource("tracks", track.id);
+  }
+  const handleUnpublishTrack = ()=>{
+    setUnpublishWarningPopup(true);
+    setOptionsMenuOpen(false);
+  }
+  const unpublishConfirmed = ()=>{
+    setUnpublishWarningPopup(false);
+    const response = unpublishUserResource("tracks", track.id);
   }
   const handleEditTrack = ()=>{
     setEditTrackPopupOpen(true);
@@ -36,27 +63,41 @@ export default function Track({track}) {
     audioRef.current.pause();
 
   }
+  const toggleLike = ()=>{
+    toggleLikeResource("track", track.id)
+    if(isLiked){
+      setLikes(prev=>prev-1);
+    }else{
+      setLikes(prev=>prev+1);
+    }
+    setIsLiked((prev)=>!prev);
+  }
   const AddToMixingZone =<FontAwesomeIcon icon={faSliders} /> ;
   const playTrack = <FontAwesomeIcon icon={faPlay} />; 
   const pauseTrack = <FontAwesomeIcon icon={faPause} />; 
   const editTrack =<FontAwesomeIcon icon={faPenToSquare} style={{color: "#5dbcbc",}} />;
-  const removeTrack = <FontAwesomeIcon icon={faXmark} style={{color: "#5dbcbc",}} />
+  const deleteTrack = <FontAwesomeIcon icon={faXmark} style={{color: "#5dbcbc",}} />
   const optionsDots = <FontAwesomeIcon icon={faEllipsisVertical} size="lg" style={{color: "#ffffff",}} /> ;
   const trackInfo = <FontAwesomeIcon icon={faCircleInfo} /> ;
   const user = <FontAwesomeIcon icon={faUser} />; 
   const likeTrack = <FontAwesomeIcon icon={solidHeart} />;
   const unLikeTrack = <FontAwesomeIcon icon={regularHeart} />; 
-
+  const publishTrack =<FontAwesomeIcon icon={faGlobe} />;
+  const unpublishTrack =<FontAwesomeIcon icon={faUserSecret} />
   const optionsList = [
     <a onClick={handleEditTrack}>{editTrack}Edit Track</a>,
-    <a onClick={handleRemoveTrack}>{removeTrack}Delete Track</a>,
+    !track.isPublic&&<a onClick={handlePublishTrack}>{publishTrack}Publish Track</a>,
+    track.isPublic&&<a onClick={handleUnpublishTrack}>{unpublishTrack}Unpublish Track</a>,
+    <a onClick={handleDeleteTrack}>{deleteTrack}Delete Track</a>,
     // <a>{trackInfo} Track Details</a>
   ]
   return (
     <div className='track' style={{backgroundImage:`url(${track.photoUrl})`}}>
       {editTrackPopupOpen && <EditTrack track={track} openPopup={setEditTrackPopupOpen}/>}
       {/* Deletion Function */}
-      {warningPopupOpen && <Warning openPopup={setWarningPopupOpen} text='Are You sure you want to delete this track?' confirm={()=>setWarningPopupOpen(false)}/>}
+      {warningPopupOpen && <Warning openPopup={setWarningPopupOpen} text='Are You sure you want to delete this track?' confirm={deletionConfirmed}/>}
+      {publishWarningPopup && <Warning openPopup={setPublishWarningPopup} text='Are You sure you want to publish this Track?' confirm={publishConfirmed}/>}
+      {unpublishWarningPopup && <Warning openPopup={setUnpublishWarningPopup} text='Are You sure you want to unpublish this Track?' confirm={unpublishConfirmed}/>}
       <OverlayDark />
       <audio ref={audioRef} id={`sound${track.id}`} src={track.url}></audio> 
       <div onClick={handleOpenOptionsMenu} className="options">{optionsDots}</div>
@@ -78,15 +119,15 @@ export default function Track({track}) {
       {track.isPublic&&<div className="likes-section">
           <div className="user-info">
             <div>{user}</div>
-            <p>Imam Droubi</p>
+            <Link to={`/profile/${track.userId}`}>{track.user?.username}</Link>
           </div>
           <div className="like-count">
             {isLiked?
-            <div onClick={()=>setIsLiked(!isLiked)}>{likeTrack}</div>
+            <div onClick={toggleLike}>{likeTrack}</div>
             :
-            <div onClick={()=>setIsLiked(!isLiked)} >{unLikeTrack}</div>
+            <div onClick={toggleLike} >{unLikeTrack}</div>
             }
-            <p>42</p>
+            <p>{likes}</p>
           </div>
         </div>}
 

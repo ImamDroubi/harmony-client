@@ -85,7 +85,7 @@ export default function UserTracks() {
         </header>
         <div className="tracks">
           {tracks.data.map((track,ind)=>{
-            return (!currentCategory || currentCategory === "All" || currentCategory === track.Category.name)?<Track track={track} key={track.id} number = {ind+1} /> :null;
+            return (!currentCategory || currentCategory === "All" || currentCategory === track.category)?<Track track={track} key={track.id} number = {ind+1} /> :null;
           })}
         </div>
         

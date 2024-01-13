@@ -24,41 +24,41 @@ import Warning from '../../popups/warning/Warning';
 import { getSpecificTracks } from '../../../apiCalls/resources';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-const currentStorageTracks = JSON.parse(localStorage.getItem('storageTracks') || "[]");
 export default function MixingZone() {
+  const storageTracks = JSON.parse(localStorage.getItem('storageTracks') || "[]");
   const [isPaused, setIsPaused] = useState(true);
   const [isMuted,setIsMuted] = useState(false);
   const [showAddTrackPopup,setShowAddTrackPopup] = useState(false);
   const [showSaveCombinationPopup,setShowSaveCombinationPopup] = useState(false);
   const [showWarningPopup,setShowWarningPopup] = useState(false);
-  const [mixingTracks , setMixingTracks] = useState(currentStorageTracks);
-  const [tracks,setTracks]= useState([]);
+  const [mixingTracks , setMixingTracks] = useState(storageTracks);
+  
   const playAll = ()=>{
-    tracks.map((track)=>{
+    mixingTracks.map((track)=>{
       document.getElementById(`sound${track.id}`).play();
     })
     setIsPaused(false);
   }
   const pauseAll = ()=>{
-    tracks.map((track)=>{
+    mixingTracks.map((track)=>{
       document.getElementById(`sound${track.id}`).pause();
     })
     setIsPaused(true);
   }
   const muteAll = ()=>{
-    tracks.map((track)=>{
+    mixingTracks.map((track)=>{
       document.getElementById(`sound${track.id}`).muted = true;
     })
     setIsMuted(true);
   }
   const unMuteAll = ()=>{
-    tracks.map((track)=>{
+    mixingTracks.map((track)=>{
       document.getElementById(`sound${track.id}`).muted = false;
     })
     setIsMuted(false);
   }
   const resetAll = ()=>{
-    tracks.map((track)=>{
+    mixingTracks.map((track)=>{
       document.getElementById(`sound${track.id}`).currentTime = 0;
     })
   }
@@ -83,22 +83,16 @@ export default function MixingZone() {
     "showSaveCombinationPopup" : setShowSaveCombinationPopup,
     "showWarningPopup": setShowWarningPopup
   }
-
-  const queryClient = useQueryClient();
-  const{isSuccess, isPending, isError, data,refetch ,error} = useQuery({ 
-    queryKey: ['mixingTracks'],
-    queryFn: async ()=>getSpecificTracks(mixingTracks)
-  });
+  const removeTrack= (track)=>{
+    const newTracks = mixingTracks.filter(item=>{
+      return JSON.stringify(track) !== JSON.stringify(item)
+    });
+    setMixingTracks(newTracks);
+  }
   useEffect(()=>{
     localStorage.setItem('storageTracks', JSON.stringify(mixingTracks));
-    queryClient.invalidateQueries({queryKey:['mixingTracks']});
-    refetch();
   },[mixingTracks]);
 
-  useEffect(()=>{
-    setMixingTracks(data.data);
-  },[isSuccess])
-  if(isError) return "Something went wrong...";
   return (
     <div className='mixing-zone'>
       {showAddTrackPopup&&<AddToMixingZone openPopup = {setShowAddTrackPopup} mixingTracks={mixingTracks} setMixingTracks={setMixingTracks} />}
@@ -119,16 +113,13 @@ export default function MixingZone() {
         </header>
         <MixingControls {...props} />
         {
-        isPending? 
-        <p>Loading...</p>
-        :
         <div className="tracks">
           {
-            tracks.map((track)=>{
-              return <TrackFlexible track={track} key={track.id}/>
+            mixingTracks.map((track)=>{
+              return <TrackFlexible removeFromMixing={removeTrack} track={track} key={track.id}/>
             })
           }
-          {!tracks.length && <h3>There are no tracks in the mixing zone... </h3>}
+          {!mixingTracks.length && <h3>There are no tracks in the mixing zone... </h3>}
         </div>
         }
         

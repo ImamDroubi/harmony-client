@@ -24,8 +24,9 @@ import { getFileRef, uploadFileResumable } from '../../../apiCalls/uploadFile';
 import { deleteObject, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { useAuth } from '../../../contexts/AuthContext';
 import { CircularProgress, LinearProgress } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getUserResources } from '../../../apiCalls/resources';
+import axios from 'axios';
 export default function AddToMixingZone({openPopup,mixingTracks, setMixingTracks}) {
   const {currentUser} = useAuth();
   const [user,setUser] = useState();
@@ -33,12 +34,13 @@ export default function AddToMixingZone({openPopup,mixingTracks, setMixingTracks
   const [categories,setCategories] = useState([]);
   const [currentCategory,setCurrentCategory] = useState();
   const [selectedTracks, setSelectedTracks] = useState([]);
-  const handleSelectTrack = (id)=>{
-    if(!selectedTracks.includes(id)){
-      setSelectedTracks(prev=>[...prev,id]);
+  const handleSelectTrack = (track)=>{
+
+    if(!selectedTracks.includes(track)){
+      setSelectedTracks(prev=>[...prev,track]);
     }else{
       setSelectedTracks(prev=>prev.filter(item=>{
-        return item!==id;
+        return item!==track;
       }));
     }
   }
@@ -64,20 +66,19 @@ export default function AddToMixingZone({openPopup,mixingTracks, setMixingTracks
 
   const AddSelectedTracks = ()=>{
     const newTracks = [];
+    let found = false;
     selectedTracks.forEach(track=>{
-      let found = false ;
       mixingTracks.forEach(item=>{
-        if(item.id == track){
-          found = true; 
+        if(JSON.stringify(track) == JSON.stringify(item)){
+          found = true ;
         }
       })
-      if(!found)newTracks.push({
-        id: track,
-        volume : 50
-      });
+      if(!found){
+        newTracks.push(track);
+      }
     });
-
-    setMixingTracks([...mixingTracks , ...newTracks]);
+    setMixingTracks([...mixingTracks, ...newTracks]);
+    
     openPopup(false);
   }
 
@@ -115,8 +116,8 @@ export default function AddToMixingZone({openPopup,mixingTracks, setMixingTracks
         <div className="tracks">
           {tracks.data.map((track,ind)=>{
             return <>
-              {(!currentCategory || currentCategory === 'All' || currentCategory === track.Category.name )?
-                <div onClick={()=>handleSelectTrack(track.id)}  className={!selectedTracks.includes(track.id)? "block" : "block selected"}>
+              {(!currentCategory || currentCategory === 'All' || currentCategory === track.category )?
+                <div onClick={()=>handleSelectTrack(track)}  className={!selectedTracks.includes(track)? "block" : "block selected"}>
                 <Track key={track.id} track={track}/>
               </div>
               :
@@ -131,7 +132,7 @@ export default function AddToMixingZone({openPopup,mixingTracks, setMixingTracks
         </div>
         </>
         :
-        <FromComputer/>
+        <FromComputer openPopup={openPopup} mixingTracks={mixingTracks} setMixingTracks={setMixingTracks}/>
         // <form className='form' action="">
         //   <div className="file-field">
         //     <label>Track: </label>
@@ -168,7 +169,7 @@ export default function AddToMixingZone({openPopup,mixingTracks, setMixingTracks
   )
 }
 
-const FromComputer = ()=>{
+const FromComputer = ({openPopup,mixingTracks, setMixingTracks})=>{
   const {currentUser} = useAuth()
   const trackName = useRef();
   const trackCategory = useRef();
@@ -183,8 +184,8 @@ const FromComputer = ()=>{
   const [imageUploading, setImageUploading] = useState(false);
   const [trackUploading, setTrackUploading] = useState(false);
   const [trackUploadProgress,setTrackUploadProgress] = useState(0);
-
   const [formSubmitting, setFormSubmitting] = useState(false);
+  const [trackDuration,setTrackDuration] = useState(0);
   useEffect(()=>{
     uploadImage();
   },[currentImage])
@@ -264,12 +265,62 @@ const FromComputer = ()=>{
     }
     );
   }
+  // This is to calculate duration 
+  useEffect(()=>{
+    if(trackUrl == null)return; 
+    const audio = document.createElement("audio");
+    audio.src = trackUrl; 
+    audio.addEventListener("loadedmetadata", ()=>{
+      setTrackDuration(audio.duration);
+    });
+    audio.play().then(()=>{
+      audio.pause();
+    }).catch(err=>console.log(err));
+  },[trackUrl])
+
+  const createTrack = useMutation({
+    mutationFn : (payload)=>{
+      return axios.post(`/tracks`, payload);
+    },
+    onMutate:(variables)=>{
+
+    },
+    onError:(error,variables,context)=>{
+      console.log(error);
+      setFormSubmitting(false);
+    },
+    onSuccess:(data,variables,context)=>{
+      setMixingTracks([...mixingTracks,data.data]);
+      console.log("Created Successfully");
+      postSubmission();
+    }
+  })
   const submit = (e)=>{
     e.preventDefault();
     setFormSubmitting(true);
+    if(!trackName.current.value
+      || !trackCategory.current.value
+      || !trackUrl
+      || !trackDuration){
+        setFormSubmitting(false);
+        return; 
+      }
+    const payload = {
+      name : trackName.current.value,
+      category : trackCategory.current.value,
+      url : trackUrl,
+      photoUrl : imageUrl,
+      duration : trackDuration
+    }
+    createTrack.mutate(payload);
+  }
+  const postSubmission = ()=>{
+    setFormSubmitting(false);
+    console.log("Track Uploaded Successfully...");
+    openPopup(false);
   }
   return (
-    <form action="">
+    <form onSubmit={submit} action="">
         <div className="file-field">
             <label>Track: {currentTrack?.name}</label>
             <input onChange={(e)=>setCurrentTrack(e.target.files[0])} type="file" name="file" id="file" accept='audio/*' hidden/>

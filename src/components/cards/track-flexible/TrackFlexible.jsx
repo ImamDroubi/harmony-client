@@ -9,8 +9,8 @@ import MenuDropdown from '../../menus/dropdown/MenuDropdown';
 import Warning from '../../popups/warning/Warning';
 import EditTrack from '../../popups/edit-track/EditTrack';
 
-export default function TrackFlexible({track}) {
-  const [currentVolume,setCurrentVolume] = useState(track.volume);
+export default function TrackFlexible({track,volume=50,removeFromMixing}) {
+  const [currentVolume,setCurrentVolume] = useState(volume);
   const [isPaused,setIsPaused] = useState(true);
   const [isMuted,setIsMuted] = useState(false);
   const [isHigh,setIsHigh] = useState(true);
@@ -72,7 +72,10 @@ export default function TrackFlexible({track}) {
     setEditTrackPopupOpen(true);
     setOptionsMenuOpen(false);
   }
-  
+  const postRemoveTrack = ()=>{
+    removeFromMixing(track);
+    setWarningPopupOpen(false);
+  }
 
   const repeat = <FontAwesomeIcon  icon={faRepeat} size="lg" style={{color: "#fff",}} />;
   const forward = <FontAwesomeIcon icon={faForward} size="lg" style={{color: "#fff",transform:"translateX(7%)"}} />; 
@@ -109,7 +112,7 @@ export default function TrackFlexible({track}) {
   return (
     <div className='track-flexible' style={{backgroundImage:`url(${track.photoUrl})`}}> 
     {editTrackPopupOpen && <EditTrack track={track} openPopup={setEditTrackPopupOpen}/>}
-    {warningPopupOpen && <Warning openPopup={setWarningPopupOpen} text='Are You sure you want to remove the track from the mixing zone?' confirm={()=>setWarningPopupOpen(false)}/>}
+    {warningPopupOpen && <Warning openPopup={setWarningPopupOpen} text='Are You sure you want to remove the track from the mixing zone?' confirm={postRemoveTrack}/>}
       <OverlayDark />
       <audio ref={audioRef} id={`sound${track.id}`} src={track.url}></audio> 
       {/* Remove the id  */}
@@ -130,7 +133,7 @@ export default function TrackFlexible({track}) {
       <div className="right">
         <p>{currentVolume}</p>
         <div className="track-volume">
-          <RangeVolume trackRef={audioRef} change={handleVolumeChange} />
+          <RangeVolume trackId={track.id} trackRef={audioRef} change={handleVolumeChange} />
         </div>
         <div onClick={isMuted?handleUnMute:handleMute}  className='icon-div'>{isMuted?mute:isHigh?highVolume:lowVolume}</div>
       </div>

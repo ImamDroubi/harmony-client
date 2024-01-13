@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import "./save-combination.scss";
 import OverlayDark from '../../overlays/black/OverlayDark';
 import track from "../../../assets/images/track.jpg";
@@ -9,12 +9,18 @@ import { deleteObject, getDownloadURL } from 'firebase/storage';
 import { uploadFileResumable } from '../../../apiCalls/uploadFile';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useMutation } from '@tanstack/react-query';
+import { CircularProgress } from '@mui/material';
+import axios from 'axios';
 export default function SaveCombination({openPopup}) {
   const {currentUser} = useAuth();
   const [currentImage, setCurrentImage]= useState();
+  const nameRef = useRef();
+  const categoryRef = useRef();
+  const descriptionRef = useRef();
   const [imageUploadRef,setImageUploadRef] = useState();
   const [imageUrl,setImageUrl] = useState();
   const [imageUploading, setImageUploading] = useState(false);
+  const [formSubmitting,setFormSubmitting] = useState(false);
   useEffect(()=>{
     uploadImage();
   },[currentImage])
@@ -61,7 +67,34 @@ export default function SaveCombination({openPopup}) {
   })
 
   const submit = (e)=>{
+    e.preventDefault();
+    const name = nameRef.current.value; 
+    const category = categoryRef.current.value;
+    const description = descriptionRef.current.value; 
+    const mixingTracks = JSON.parse(localStorage.getItem('storageTracks'));
+    const tracks = []; 
+    mixingTracks.forEach(item=>{
+      tracks.push({
+        id : item.id ,
+        volume : document.getElementById(`volume-${item.id}`).value 
+      })
+    });
+    if(track.length == 0 || !name || !category)return; 
+    const payload = {
+      name : name, 
+      category : category, 
+      description : description, 
+      tracks : tracks,
+      photoUrl : imageUrl
+    };
+    setFormSubmitting(true);
+    createCombination.mutate(payload)
+  }
 
+  const postSubmission = ()=>{
+    setFormSubmitting(false);
+    console.log("Combination Created Successfully...");
+    openPopup(false);
   }
   return (
     <PopupLayout>
@@ -70,19 +103,19 @@ export default function SaveCombination({openPopup}) {
         <div className="title">
           <h2>Save Combination</h2>
         </div>
-        <form action="">
+        <form onSubmit={submit} action="">
           <div className="form-field">
             <label>Combination Name:</label>
-            <input placeholder='eg.Kids Story' type="text" />
+            <input ref={nameRef} placeholder='eg.Kids Story' type="text" />
           </div>
           <div className="form-field">
             <label>Category:</label>
-            <input placeholder='eg.Sleep' type="text" />
+            <input ref={categoryRef} placeholder='eg.Sleep' type="text" />
           </div>
           <div className="row-fields">
             <div className="form-field">
               <label>Descrption:</label>
-              <textarea placeholder='Descripe the combination you made...' name="" id=""></textarea>
+              <textarea ref={descriptionRef} placeholder='Descripe the combination you made...' name="" id=""></textarea>
               
             </div>
             <div className="form-field">
@@ -99,7 +132,8 @@ export default function SaveCombination({openPopup}) {
             </div>
           </div>
           
-          <input type="submit" value="Save Combination" />
+          {!formSubmitting && <input disabled={!nameRef?.current?.value || !categoryRef?.current?.value} type="submit" value="Save Combination" />}
+          {formSubmitting && <CircularProgress/>}
         </form>
       </div>
     </PopupLayout>

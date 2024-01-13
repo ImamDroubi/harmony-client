@@ -22,7 +22,6 @@ export default function UploadTrack({openPopup}) {
   const [imageUploadRef,setImageUploadRef] = useState();
   const [imageUrl,setImageUrl] = useState();
   const [trackUrl,setTrackUrl] = useState();
-  const [submitEnabled, setSubmitEnabled] = useState(true); 
   const [imageUploading, setImageUploading] = useState(false);
   const [trackUploading, setTrackUploading] = useState(false);
   const [trackUploadProgress,setTrackUploadProgress] = useState(0);
@@ -199,7 +198,7 @@ export default function UploadTrack({openPopup}) {
           </div>
           {imageUploading&&<LinearProgress style={{width:'100%', marginBottom:'0px'}} />}
           {!formSubmitting && <input disabled={
-            !submitEnabled || trackUrl == null 
+            trackUrl == null 
             || trackName.current.value == null || trackCategory.current.value == null
             || imageUploading || trackUploading
           } type="submit" value="Save Track" />}

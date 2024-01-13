@@ -27,7 +27,7 @@ export default function CustomSelect({list,setCurrentCategory}) {
       <ul>
         <li onClick={handleOpen} className='first-element'>{selected || "Select"}<div className='arrow-icon'>{arrowDown}</div></li>
         <li onClick={(e)=>handleSelect(e)}  className={selected?'selected':'hidden'}>All</li>
-        {list.map((item,ind)=>{
+        {list?.map((item,ind)=>{
           return <li key={`category${ind}`} onClick={(e)=>handleSelect(e)} title={item} className={selected?'selected':'hidden'}>{item.length>10?`${item.slice(0,7)}...`:item}</li>
         })}
       </ul>
