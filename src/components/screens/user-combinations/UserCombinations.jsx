@@ -118,6 +118,7 @@ export default function UserCombinations() {
         {/*======================= */}
         <div className="combinations">
           {combinations?.map(comb=>{
+            
             return !currentCategory || currentCategory === "All" || comb.category === currentCategory?<Combination combination={comb}/>:null
           })}
         </div>

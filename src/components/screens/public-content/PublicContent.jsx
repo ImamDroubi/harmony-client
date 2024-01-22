@@ -84,6 +84,9 @@ export default function UserPublic() {
           ?<Track track={track} key={track.id} number = {ind+1} /> 
           :null;
         })}
+        { // This is for the layout 
+          tracks?.length %3 == 2 && <div className="extra"></div>
+        }
       </div>}
     </ContainerWide>
   </div>

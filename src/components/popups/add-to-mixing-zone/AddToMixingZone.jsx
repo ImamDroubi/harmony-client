@@ -69,8 +69,10 @@ export default function AddToMixingZone({openPopup,mixingTracks, setMixingTracks
     let found = false;
     selectedTracks.forEach(track=>{
       mixingTracks.forEach(item=>{
+        console.log(JSON.stringify(track),JSON.stringify(item));
         if(JSON.stringify(track) == JSON.stringify(item)){
           found = true ;
+          
         }
       })
       if(!found){
@@ -118,7 +120,7 @@ export default function AddToMixingZone({openPopup,mixingTracks, setMixingTracks
             return <>
               {(!currentCategory || currentCategory === 'All' || currentCategory === track.category )?
                 <div onClick={()=>handleSelectTrack(track)}  className={!selectedTracks.includes(track)? "block" : "block selected"}>
-                <Track key={track.id} track={track}/>
+                <Track key={track.id} track={track} showPublicBagde={false}/>
               </div>
               :
               null

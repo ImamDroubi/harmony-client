@@ -11,7 +11,7 @@ import Warning from "../../popups/warning/Warning";
 import { Link } from 'react-router-dom';
 import { deleteUserResource, publishUserResource, toggleLikeResource, unpublishUserResource } from '../../../apiCalls/resources';
 import { useQueryClient } from '@tanstack/react-query';
-export default function Track({track}) {
+export default function Track({track,showPublicBagde}) {
   const [isPaused,setIsPaused] = useState(true);
   const [optionsMenuOpen,setOptionsMenuOpen] = useState(false);
   const [editTrackPopupOpen,setEditTrackPopupOpen] = useState(false);
@@ -101,7 +101,7 @@ export default function Track({track}) {
       <OverlayDark />
       <audio ref={audioRef} id={`sound${track.id}`} src={track.url}></audio> 
       <div onClick={handleOpenOptionsMenu} className="options">{optionsDots}</div>
-      {track.isPublic&&<div className="public-badge">
+      {track.isPublic&&showPublicBagde !== false&&<div className="public-badge">
         <div className="triangle"></div>
         <div className="rectangle">
           <p>Public</p>
@@ -116,10 +116,10 @@ export default function Track({track}) {
         <RangeTime trackRef={audioRef} setPaused={setIsPaused}/>
         <div className='control' onClick={isPaused?handlePlay:handlePause} >{isPaused?playTrack:pauseTrack}</div>
       </div>
-      {track.isPublic&&<div className="likes-section">
+      {track.isPublic&&showPublicBagde !== false&&<div className="likes-section">
           <div className="user-info">
             <div>{user}</div>
-            <Link to={`/profile/${track.userId}`}>{track.user?.username}</Link>
+            <Link to={`/profile/${track.userId}`}>{track.owner?.username}</Link>
           </div>
           <div className="like-count">
             {isLiked?

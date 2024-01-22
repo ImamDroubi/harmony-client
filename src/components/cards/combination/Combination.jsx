@@ -130,7 +130,7 @@ export default function Combination({combination}) {
         <div className="left">
           <div className="user-info">
             <div>{user}</div>
-            <Link to={`/profile/${combination.user?.id}`}>{combination.user?.username}</Link>
+            <Link to={`/profile/${combination.owner?.id}`}>{combination.owner?.username}</Link>
           </div>
           <div className="like-count">
             {isLiked?

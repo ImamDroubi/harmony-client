@@ -46,3 +46,7 @@ export const  getPublicResourceByCategory = async(type,category)=>{
   console.log("Sending...");
   return axios.get(`/${type}/public/${category}`);
 }
+
+export const updateResource = async(type,resourceId,payload)=>{
+  return await axios.patch(`/${type}/${resourceId}`, payload);
+}

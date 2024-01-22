@@ -87,6 +87,9 @@ export default function UserTracks() {
           {tracks.data.map((track,ind)=>{
             return (!currentCategory || currentCategory === "All" || currentCategory === track.category)?<Track track={track} key={track.id} number = {ind+1} /> :null;
           })}
+          { // This is for the layout 
+            tracks.data.length %3 == 2 && <div className="extra"></div>
+          }
         </div>
         
       </ContainerWide>

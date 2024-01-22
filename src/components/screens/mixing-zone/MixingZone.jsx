@@ -118,6 +118,10 @@ export default function MixingZone() {
             mixingTracks.map((track)=>{
               return <TrackFlexible removeFromMixing={removeTrack} track={track} key={track.id}/>
             })
+            
+          }
+          { // This is for the layout 
+            mixingTracks.length %3 == 2 && <div className="extra"></div>
           }
           {!mixingTracks.length && <h3>There are no tracks in the mixing zone... </h3>}
         </div>

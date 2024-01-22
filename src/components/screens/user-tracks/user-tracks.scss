@@ -108,5 +108,9 @@
     justify-content: space-between;
     gap: 2rem;
     z-index: 0;
+    padding-bottom: 2rem;
+    .extra{
+      width: 30%;
+    }
   }
 }

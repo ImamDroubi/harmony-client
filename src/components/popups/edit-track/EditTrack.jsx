@@ -4,22 +4,85 @@ import PopupLayout from '../popup-layout/PopupLayout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faXmark,faUpload} from '@fortawesome/free-solid-svg-icons';
 import OverlayDark from '../../overlays/black/OverlayDark';
+import {getFileRef, uploadFileResumable } from '../../../apiCalls/uploadFile';
+import {CircularProgress, LinearProgress } from '@mui/material';
+import { getDownloadURL } from 'firebase/storage';
+import { useAuth } from '../../../contexts/AuthContext';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { updateResource } from '../../../apiCalls/resources';
 export default function EditTrack({openPopup,track}) {
-  const [trackName,setTrackName] = useState();
-  const [trackCategory,setTrackCategory]= useState();
-  const [trackImage,setTrackImage] = useState();
+  const {currentUser} = useAuth();
+  const [currentImage, setCurrentImage]= useState();
+  const [currentName, setCurrentName] = useState();
+  const [currentCategory,setCurrentCategory] = useState();
+  const [imageUploadRef,setImageUploadRef] = useState();
+  const [imageUrl,setImageUrl] = useState(track.photoUrl);
+  const [imageUploading, setImageUploading] = useState(false);
+  const [formSubmitting,setFormSubmitting] = useState(false);
   const handleNameChange = (e)=>{
-    setTrackName(e.target.value);
+    setCurrentName(e.target.value);
   }
   const handleCategoryChange = (e)=>{
-    setTrackCategory(e.target.value);
+    setCurrentCategory(e.target.value);
   }
 
   useEffect(()=>{
-    setTrackName(track?.title);
-    setTrackCategory(track?.category);
-    setTrackImage(track?.img);
+    setCurrentName(track?.name);
+    setCurrentCategory(track?.category);
   },[track])
+
+  useEffect(()=>{
+    uploadImage();
+  },[currentImage])
+
+  const uploadImage = async ()=>{
+    if(currentImage == null){
+      return; 
+    }
+    if(imageUploadRef){
+      try{
+        const res = deleteObject(imageUploadRef);
+        setImageUrl(null);
+      }catch(error){
+        console.log(error);
+      }
+      
+    }
+    setImageUploading(true);
+    setFormSubmitting(true);
+    try{
+      const response = await uploadFileResumable(currentImage,"image", currentUser.id);
+      const url = await getDownloadURL(response.ref);
+      setImageUploadRef(response.ref);
+      setImageUrl(url);
+    }catch(error){
+      console.log(error);
+    }finally{
+      setImageUploading(false);
+      setFormSubmitting(false);
+    }
+  }
+  const updateTask = useMutation({
+    mutationKey : ["tracks"],
+    mutationFn : ()=>updateResource("tracks", track.id,{
+      name: currentName || undefined,
+      category : currentCategory || undefined,
+      photoUrl : imageUrl || undefined
+    }),
+    onSuccess : ()=>{
+      openPopup(false);
+    },
+    onError:(error)=>{
+      console.log(error);
+      setFormSubmitting(false);
+    }
+  })
+  const handleUpdate = (e)=>{
+    e.preventDefault();
+    setFormSubmitting(true);
+    updateTask.mutate();
+  }
+
   return (
     <PopupLayout>
       <div className="popup-upload-track">
@@ -27,28 +90,35 @@ export default function EditTrack({openPopup,track}) {
         <div className="title">
           <h2>Edit Track</h2>
         </div>
-        <form action="">
+        <form onSubmit={(e)=>handleUpdate(e)} action="">
           <div className="form-field">
             <label>Track Name:</label>
-            <input onChange={(e)=>handleNameChange(e)} value={trackName} type="text" />
+            <input onChange={(e)=>handleNameChange(e)} value={currentName} type="text" />
           </div>
           <div className="form-field">
             <label>Category:</label>
-            <input onChange={(e)=>handleCategoryChange(e)} value={trackCategory} type="text" />
+            <input onChange={(e)=>handleCategoryChange(e)} value={currentCategory} type="text" />
           </div>
           <div className="form-field">
             <label>Track Image:</label>
             <div className="photo">
-              <button>Upload</button>
+              <input onChange={(e)=>setCurrentImage(e.target.files[0])} type="file" name="image" id="image" accept="image/*"  hidden/>
+              {!imageUploading&&<label htmlFor='image'  className='upload-image-button'>Upload</label>}
               <div className="preview">
-                <img src={trackImage} alt="" />
+                <img src={imageUrl || track?.photoUrl} alt="" />
                 <OverlayDark/>
               </div>
               
               {/* <input type="file" name="" id="" /> */}
             </div>
           </div>
-          <input type="submit" value="Save Track" />
+          {!formSubmitting&&<input 
+          disabled={
+            currentName === track?.name
+            && currentCategory === track?.category
+            && imageUrl === track?.photoUrl
+          } type="submit" value="Save Track" />}
+          {formSubmitting && <CircularProgress/>}
         </form>
       </div>
     </PopupLayout>
