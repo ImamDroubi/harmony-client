@@ -7,7 +7,6 @@ export default function CustomSelect({list,setCurrentCategory}) {
   const [selected,setSelected] = useState();
   const [isOpen,setIsOpen] = useState(false);
   const arrowDown = <FontAwesomeIcon icon={faArrowDown} />;
-  const arrowUp = <FontAwesomeIcon icon={faArrowUp} />;
   const customSelectRef = useRef();
 
   const handleSelect = (e)=>{

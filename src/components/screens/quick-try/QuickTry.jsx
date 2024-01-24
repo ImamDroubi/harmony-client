@@ -16,7 +16,6 @@ import waterfall_s from "../../../assets/sounds/waterfall.mp3";
 import thunder_s from "../../../assets/sounds/thunder.mp3";
 import rain_s from "../../../assets/sounds/rain.mp3";
 import ButtonBack from '../../buttons/button-back/ButtonBack';
-// import test_s from "../../../assets/sounds/test.mp3";
 export default function QuickTry() {
   const tracks = [
     {

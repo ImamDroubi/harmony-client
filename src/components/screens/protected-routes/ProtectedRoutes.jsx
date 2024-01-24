@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import MixingZone from '../mixing-zone/MixingZone'
 import UserCombinations from '../user-combinations/UserCombinations'
@@ -8,7 +8,13 @@ import { useAuth } from '../../../contexts/AuthContext'
 
 export default function ProtectedRoutes() {
   const {currentUser} = useAuth();
-  if(!currentUser){
+  const [logged,setLogged] = useState(null);
+  useEffect(()=>{
+    setTimeout(()=>{
+      currentUser?setLogged(true):setLogged(false);
+    }, 500);
+  },[currentUser])
+  if( logged !== null && logged === false){
     return <Navigate to="/" replace />
   }
   return (

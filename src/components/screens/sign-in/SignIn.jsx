@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import "./sign-in.scss";
-import Topbar from '../../other/topbar/Topbar';
 import ContainerWide from '../../containers/container-wide/ContainerWide';
-import ButtonBack from '../../buttons/button-back/ButtonBack';
 import person1 from "../../../assets/images/person1_small.jpg";
 import OverlayDark from '../../overlays/black/OverlayDark';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser,faEnvelope,faKey} from '@fortawesome/free-solid-svg-icons'
-import { Link, redirect, useNavigate } from 'react-router-dom';
+import { faEnvelope,faKey} from '@fortawesome/free-solid-svg-icons'
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import { signInCall } from '../../../apiCalls/authentication';
 

@@ -21,7 +21,7 @@ export default function UserIcon() {
   return (
     <div className='user-icon'>
       <p>{user.username}</p>
-      <img src={userImage} onClick={handleMenu}/>
+      <img src={user.profilePicture || userImage} onClick={handleMenu}/>
       {menuOpen && 
         <MenuDropdown list={[
           <Link to={'/profile'}><FontAwesomeIcon icon={faUser} size="sm" style={{color: "#5dbcbc",}} />Profile Page</Link>,

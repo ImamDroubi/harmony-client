@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import "./user-profile.scss";
-import Sidebar from '../../menus/sidebar/Sidebar';
 import UserSide from '../../other/user-side/UserSide';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
@@ -9,23 +8,9 @@ import Toggle from '../../other/toggle/Toggle';
 import Combination from '../../cards/combination/Combination';
 import Track from '../../cards/track/Track';
 import CustomSelect from '../../menus/custom-select/CustomSelect';
-import ocean from "../../../assets/images/ocean.jpg";
-import birds from "../../../assets/images/birds.jpg";
-import sleep from "../../../assets/images/sleep.jpg";
-import study from "../../../assets/images/study.jpg";
-import campfire from "../../../assets/images/campfire.jpg";
-import waterfall from "../../../assets/images/waterfall.jpg";
-import thunder from "../../../assets/images/thunder.jpg";
-import rain from "../../../assets/images/rain.jpg";
-import ocean_s from "../../../assets/sounds/ocean.mp3";
-import birds_s from "../../../assets/sounds/birds.mp3";
-import campfire_s from "../../../assets/sounds/campfire.mp3";
-import waterfall_s from "../../../assets/sounds/waterfall.mp3";
-import thunder_s from "../../../assets/sounds/thunder.mp3";
-import rain_s from "../../../assets/sounds/rain.mp3";
 import { useParams } from 'react-router-dom';
-import { useQueries, useQuery } from '@tanstack/react-query';
-import { getPublicUserResource, getUserResources } from '../../../apiCalls/resources';
+import { useQuery } from '@tanstack/react-query';
+import { getPublicUserResource} from '../../../apiCalls/resources';
 import { CircularProgress } from '@mui/material';
 import { getExtendedUser } from '../../../apiCalls/users';
 export default function UserProfile() {

@@ -1,6 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios"
-
 export const getUserResources = async ({queryKey})=>{
   const type = queryKey[0];
   const userId = queryKey[1]; 
@@ -43,10 +41,13 @@ export const getPublicUserResource = async(type,userId)=>{
 }
 
 export const  getPublicResourceByCategory = async(type,category)=>{
-  console.log("Sending...");
   return axios.get(`/${type}/public/${category}`);
 }
 
 export const updateResource = async(type,resourceId,payload)=>{
   return await axios.patch(`/${type}/${resourceId}`, payload);
+}
+
+export const cloneResource = async (type, resourceId)=>{
+  return axios.post(`/${type}/clone/${resourceId}`);
 }

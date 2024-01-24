@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import "./edit-profile.scss";
 import ContainerWide from '../../containers/container-wide/ContainerWide';
-import ButtonStrong from '../../buttons/button-strong/ButtonStrong';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUser,faEnvelope,faKey} from '@fortawesome/free-solid-svg-icons';
 import person1 from '../../../assets/images/person1.jpg';
 import { useAuth } from '../../../contexts/AuthContext';
-import { Link, Navigate } from 'react-router-dom';
 import { uploadFileResumable } from '../../../apiCalls/uploadFile';
 import { deleteObject, getDownloadURL } from 'firebase/storage';
 import { useMutation } from '@tanstack/react-query';
@@ -177,7 +175,7 @@ const PersonalInfoForm = ({toggle,imageUrl})=>{
   },[currentUser])
 
   useEffect(()=>{
-    if(username===oldUsername && email ===oldEmail && !imageUrl){
+    if(username===oldUsername && email ===oldEmail && imageUrl === currentUser?.profilePicture){
       setChanged(false);
     }else setChanged(true);
   },[username,email,imageUrl])

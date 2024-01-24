@@ -4,7 +4,7 @@ import PopupLayout from '../popup-layout/PopupLayout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faXmark,faUpload} from '@fortawesome/free-solid-svg-icons';
 import OverlayDark from '../../overlays/black/OverlayDark';
-import {getFileRef, uploadFileResumable } from '../../../apiCalls/uploadFile';
+import {uploadFileResumable } from '../../../apiCalls/uploadFile';
 import {CircularProgress, LinearProgress } from '@mui/material';
 import { getDownloadURL } from 'firebase/storage';
 import { useAuth } from '../../../contexts/AuthContext';

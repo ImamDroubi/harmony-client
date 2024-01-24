@@ -1,17 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import "./sign-up.scss";
-import Topbar from '../../other/topbar/Topbar';
 import ContainerWide from '../../containers/container-wide/ContainerWide';
-import ButtonBack from '../../buttons/button-back/ButtonBack';
 import person2 from "../../../assets/images/person2.jpg";
 import OverlayDark from '../../overlays/black/OverlayDark';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser,faEnvelope,faKey} from '@fortawesome/free-solid-svg-icons';
-import { Link, redirect, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import { signUpCall, verifyData } from '../../../apiCalls/authentication';
 import { useAuth } from '../../../contexts/AuthContext';
-import { CircularProgress } from '@mui/material';
 export default function SignUp() {
   const {login,currentUser} = useAuth();
   // redirect if logged in 

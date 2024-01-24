@@ -18,6 +18,7 @@ export function AuthProvider({children}) {
     setCurrentUser(undefined);
     document.cookie = 'access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('storageTracks');
   }
 
   const value = {

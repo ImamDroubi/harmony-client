@@ -6,7 +6,6 @@ import PopupLayout from '../popup-layout/PopupLayout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faXmark,faTriangleExclamation} from '@fortawesome/free-solid-svg-icons';
 import ButtonStrong from "../../buttons/button-strong/ButtonStrong";
-import ButtonLight from "../../buttons/button-light/ButtonLight";
 export default function Warning({text="Are you sure?",openPopup,confirm,cancel,confirmText = 'Yes', CancelText = 'No'}) {
 
   const handleConfirm = ()=>{

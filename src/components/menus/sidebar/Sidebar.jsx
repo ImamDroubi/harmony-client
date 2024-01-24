@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import "./sidebar.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSliders,faHeadphones,faGlobe,faPodcast,faBookOpen,faBookQuran,faMountainSun,faFan,faMosquito,faMusic} from '@fortawesome/free-solid-svg-icons'
-import { Link, NavLink } from 'react-router-dom';
+import {NavLink } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 export default function Sidebar() {
   const [showMobileView, setShowMobileView] = useState(false);

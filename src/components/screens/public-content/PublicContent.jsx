@@ -3,25 +3,10 @@ import {faMagnifyingGlass,faUpload} from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react'
 import "./public-content.scss";
 import Combination from '../../cards/combination/Combination';
-import CustomSelect from '../../menus/custom-select/CustomSelect';
 import ContainerWide from '../../containers/container-wide/ContainerWide';
-import ocean from "../../../assets/images/ocean.jpg";
-import birds from "../../../assets/images/birds.jpg";
-import sleep from "../../../assets/images/sleep.jpg";
-import study from "../../../assets/images/study.jpg";
-import campfire from "../../../assets/images/campfire.jpg";
-import waterfall from "../../../assets/images/waterfall.jpg";
-import thunder from "../../../assets/images/thunder.jpg";
-import rain from "../../../assets/images/rain.jpg";
-import ocean_s from "../../../assets/sounds/ocean.mp3";
-import birds_s from "../../../assets/sounds/birds.mp3";
-import campfire_s from "../../../assets/sounds/campfire.mp3";
-import waterfall_s from "../../../assets/sounds/waterfall.mp3";
-import thunder_s from "../../../assets/sounds/thunder.mp3";
-import rain_s from "../../../assets/sounds/rain.mp3";
 import Toggle from '../../other/toggle/Toggle';
 import Track from '../../cards/track/Track';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getPublicResourceByCategory } from '../../../apiCalls/resources';
 export default function UserPublic() {

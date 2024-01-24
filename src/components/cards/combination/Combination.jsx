@@ -1,19 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, {useState } from 'react'
 import "./combination.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPlay,faEllipsis,faGlobe,faUser,faHeart as solidHeart,faPenToSquare,faXmark,faPause,faUserSecret} from "@fortawesome/free-solid-svg-icons";
+import {faPlay,faEllipsis,faClone,faGlobe,faUser,faHeart as solidHeart,faPenToSquare,faXmark,faPause,faUserSecret} from "@fortawesome/free-solid-svg-icons";
 import {faHeart as regularHeart} from "@fortawesome/free-regular-svg-icons";
-import sleep from "../../../assets/images/sleep.jpg";
 import OverlayDark from '../../overlays/black/OverlayDark';
+import combinationDefaultPhoto from "../../../assets/images/track.jpg";
 import MenuDropdown from '../../menus/dropdown/MenuDropdown';
 import EditCombination from '../../popups/edit-combination/EditCombination';
 import Warning from '../../popups/warning/Warning';
-import { deleteUserResource, publishUserResource, toggleLikeResource, unpublishUserResource } from '../../../apiCalls/resources';
+import { cloneResource, deleteUserResource, publishUserResource, toggleLikeResource, unpublishUserResource } from '../../../apiCalls/resources';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
 
 
 export default function Combination({combination}) {
-
+  const {currentUser} = useAuth();
 
   const [isLiked,setIsLiked] = useState(combination.isLiked);
   const [optionsMenuOpen,setOptionsMenuOpen] = useState(false);
@@ -22,10 +23,11 @@ export default function Combination({combination}) {
   const [warningPopupOpen,setWarningPopupOpen]= useState(false);
   const [publishWarningPopup,setPublishWarningPopup] = useState(false);
   const [unpublishWarningPopup,setUnpublishWarningPopup] = useState(false);
+  const [cloneWarningPopup,setCloneWarningPopup] = useState(false);
   const [tracks,setTracks] = useState(combination.tracks);
   const [likes,setLikes]= useState(combination.likes);
   const combinationStyles = {
-    backgroundImage : `url(${combination.photoUrl})`,
+    backgroundImage : `url(${combination.photoUrl || combinationDefaultPhoto})`,
     backgroundSize : 'cover',
     backgroundPosition : "20%"
   }
@@ -39,7 +41,7 @@ export default function Combination({combination}) {
   const unLikeCombination = <FontAwesomeIcon icon={regularHeart} />; 
   const publishCombination =<FontAwesomeIcon icon={faGlobe} />;
   const unpublishCombination =<FontAwesomeIcon icon={faUserSecret} />
-
+  const cloneCombination = <FontAwesomeIcon icon={faClone} />
   const handleDeleteCombination = ()=>{
     setWarningPopupOpen(true);
     setOptionsMenuOpen(false);
@@ -47,6 +49,14 @@ export default function Combination({combination}) {
   const deletionConfirmed = ()=>{
     setWarningPopupOpen(false);
     const response = deleteUserResource("combinations", combination.id);
+  }
+  const handleCloneCombination = ()=>{
+    setCloneWarningPopup(true);
+    setOptionsMenuOpen(false);
+  }
+  const cloneConfirmed = ()=>{
+    setCloneWarningPopup(false);
+    const response = cloneResource("combinations" , combination.id);
   }
   const handlePublishCombination = ()=>{
     setPublishWarningPopup(true);
@@ -95,10 +105,11 @@ export default function Combination({combination}) {
     setIsLiked((prev)=>!prev);
   }
   const optionsList = [
-    <a onClick={handleEditCombination}>{editCombination}Edit Combination</a>,
-    !combination.isPublic&&<a onClick={handlePublishCombination}>{publishCombination}Publish Combination</a>,
-    combination.isPublic&&<a onClick={handleUnpublishCombination}>{unpublishCombination}Unpublish Combination</a>,
-    <a onClick={handleDeleteCombination}>{deleteCombination}Delete Combination</a>
+    currentUser?.id === combination.owner.id &&<a onClick={handleEditCombination}>{editCombination}Edit Combination</a>,
+    currentUser?.id === combination.owner.id &&!combination.isPublic&&<a onClick={handlePublishCombination}>{publishCombination}Publish Combination</a>,
+    currentUser?.id === combination.owner.id &&combination.isPublic&&<a onClick={handleUnpublishCombination}>{unpublishCombination}Unpublish Combination</a>,
+    currentUser?.id === combination.owner.id &&<a onClick={handleDeleteCombination}>{deleteCombination}Delete Combination</a>,
+    currentUser?.id !== combination.owner.id && <a onClick={handleCloneCombination}>{cloneCombination}Clone Combination</a> 
   ]
   return (
     <div className='combination' style={{...combinationStyles}}>
@@ -107,6 +118,7 @@ export default function Combination({combination}) {
       {warningPopupOpen && <Warning openPopup={setWarningPopupOpen} text='Are You sure you want to delete this combination?' confirm={deletionConfirmed}/>}
       {publishWarningPopup && <Warning openPopup={setPublishWarningPopup} text='Are You sure you want to publish this combination?' confirm={publishConfirmed}/>}
       {unpublishWarningPopup && <Warning openPopup={setUnpublishWarningPopup} text='Are You sure you want to unpublish this combination?' confirm={unpublishConfirmed}/>}
+      {cloneWarningPopup && <Warning openPopup={setCloneWarningPopup} text='Are You sure you want to clone this Combination?' confirm={cloneConfirmed}/>}
       {tracks?.map((track,ind)=>{
         return <audio key={ind} id={`track${track.id}-combination${combination.id}`} src={`${track.url}`}></audio>
       })}
