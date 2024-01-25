@@ -449,7 +449,7 @@ export default function UserProfile() {
           {combinationsQuery.isPending && <CircularProgress/>}
             {combinations.map(comb=>{
               return !currentCategory || currentCategory === "All" || comb.category === currentCategory?
-              <Combination combination={comb}/>
+              <Combination key={comb.id} combination={comb}/>
               :null
             })}
           </div>}

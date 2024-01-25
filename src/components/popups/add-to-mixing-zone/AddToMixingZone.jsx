@@ -103,7 +103,7 @@ export default function AddToMixingZone({openPopup,mixingTracks, setMixingTracks
           {selectedTracks.length> 0 && <p>{selectedTracks.length} Tracks selected</p>}
         </div>
         <div className="tracks">
-          {tracks.data.map((track,ind)=>{
+          {tracks.data.map((track)=>{
             return <>
               {(!currentCategory || currentCategory === 'All' || currentCategory === track.category )?
                 <div onClick={()=>handleSelectTrack(track)}  className={!selectedTracks.includes(track)? "block" : "block selected"}>

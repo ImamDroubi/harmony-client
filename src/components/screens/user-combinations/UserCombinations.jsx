@@ -35,23 +35,8 @@ export default function UserCombinations() {
   },[currentUser])
 
   useEffect(()=>{
-    const combs = data?.data?.map(comb=>{
-      const {Tracks, User, ...details} = comb; 
-      const tracks = Tracks?.map(track=>{
-        const {Tracks_Combination, ...track_details} = track; 
-        return {
-          ...track_details,
-          volume : Tracks_Combination.volume
-        }
-      })
-
-      return {
-        ...details,
-        tracks : tracks, 
-        user: User
-      }
-    })
-    setCombinations(combs);
+    
+    setCombinations(data?.data);
   },[isSuccess])
 
 

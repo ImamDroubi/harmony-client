@@ -13,7 +13,8 @@ export default function UserTracks() {
   const {currentUser} = useAuth();
   const [user,setUser] = useState();
   const [uploadTrackPopupOpen, setUploadTrackPopupOpen] = useState(false);
-
+  const [visibleTracks,setVisibleTracks] = useState(0);
+  const [tracks,setTracks] = useState([]);
   const [currentCategory,setCurrentCategory] = useState();
   const handleCategoryChange = (e)=>{
     setCurrentCategory(e.target.value);
@@ -23,7 +24,7 @@ export default function UserTracks() {
   ]
   const uploadTrack = <FontAwesomeIcon icon={faUpload} />;
 
-  const{isPending, isError, data:tracks, error} = useQuery({ // data here contains tracks
+  const{isPending, isError,isSuccess, data, error} = useQuery({ // data here contains tracks
     queryKey: ['tracks', user?.id],
     queryFn: getUserResources,
     enabled : !!user
@@ -41,6 +42,19 @@ export default function UserTracks() {
   useEffect(()=>{
     setUser(currentUser);
   },[currentUser])
+  
+  
+  useEffect(()=>{
+    setTracks(data?.data);
+  },[isSuccess])
+
+  useEffect(()=>{
+    {tracks.map((track)=>{
+      if(!currentCategory || currentCategory === "All" || currentCategory === track.category){
+        setVisibleTracks(prev=>prev+1);
+      }
+    })}
+  },[currentCategory])
   if(!user)return "Loading...";
   if(isPending || isPending_categories) return "Loading...";
   if(isError) return `Error: ${error.message}`
@@ -70,11 +84,13 @@ export default function UserTracks() {
           
         </header>
         <div className="tracks">
-          {tracks.data.map((track,ind)=>{
-            return (!currentCategory || currentCategory === "All" || currentCategory === track.category)?<Track track={track} key={track.id} number = {ind+1} /> :null;
+          {tracks?.map((track,ind)=>{
+            if(!currentCategory || currentCategory === "All" || currentCategory === track.category){
+              return <Track track={track} key={track.id} number = {ind+1} /> ;
+            }
           })}
           { // This is for the layout 
-            tracks.data.length %3 == 2 && <div className="extra"></div>
+            visibleTracks%3 == 2 && <div className="extra"></div>
           }
         </div>
         

@@ -12,6 +12,7 @@ import Welcome from './components/screens/welcome/Welcome'
 import PublicContent from './components/screens/public-content/PublicContent'
 import { Routes,Route, Router, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+
 function App() {
 
   return (

@@ -7,14 +7,18 @@ import ContainerWide from '../../containers/container-wide/ContainerWide';
 import Toggle from '../../other/toggle/Toggle';
 import Track from '../../cards/track/Track';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getPublicResourceByCategory } from '../../../apiCalls/resources';
 export default function UserPublic() {
-  const {category: currentCategory} = useParams();
+  const {category} = useParams();
+  const [currentCategory,setCurrentCategory] = useState();
   const [currentResource,setCurrentResource] = useState(false); // false for tracks, true for combinations
   const [tracks,setTracks]= useState([]);
   const [combinations,setCombinations]= useState([]);
-
+  const queryClient = useQueryClient();
+  useEffect(()=>{
+    setCurrentCategory(category);
+  },[category])
   const tracksQuery = useQuery({
     queryKey:['tracks' , 'public', currentCategory],
     queryFn : async ()=>getPublicResourceByCategory("tracks" , currentCategory),
@@ -22,7 +26,7 @@ export default function UserPublic() {
   });
   useEffect(()=>{
     setTracks(tracksQuery.data?.data);
-  },[tracksQuery?.isSuccess])
+  },[tracksQuery?.isSuccess, tracksQuery?.isFetching])
   const combinationsQuery = useQuery({
     queryKey:['combinations' , 'public', currentCategory],
     queryFn : async ()=>getPublicResourceByCategory("combinations" , currentCategory),
@@ -30,11 +34,7 @@ export default function UserPublic() {
   });
   useEffect(()=>{
     setCombinations(combinationsQuery.data?.data);
-  },[combinationsQuery?.isSuccess])
-  useEffect(()=>{
-    tracksQuery.refetch();
-    combinationsQuery.refetch();
-  },[currentCategory,currentResource])
+  },[combinationsQuery?.isSuccess, combinationsQuery?.isFetching])
   return (
     <div className='public-content'>
     <ContainerWide>
@@ -58,8 +58,10 @@ export default function UserPublic() {
       </header>
       {currentResource&&<div className="combinations">
         {combinations?.map(comb=>{
+          // console.log(comb)
           return !currentCategory || currentCategory === "All" || comb.category === currentCategory?
           <Combination combination={comb}/>
+          
           :null
         })}
       </div>}

@@ -8,6 +8,10 @@
   align-items: center;
   background-color: var.$color-base;
   color: var.$color-light;
+  position: sticky;
+  left: 0;
+  top: 0;
+  max-height: 100vh;
   .info{
     display: flex;
     flex-direction: column;

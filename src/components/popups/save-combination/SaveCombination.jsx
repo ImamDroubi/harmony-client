@@ -54,13 +54,11 @@ export default function SaveCombination({openPopup}) {
       return axios.post(`/combinations`, payload);
     },
     onMutate:(variables)=>{
-      console.log(variables);
     },
     onError:(error,variables,context)=>{
       console.log(error);
     },
     onSuccess:(data,variables,context)=>{
-      console.log(data);
       console.log("Created Successfully");
       postSubmission();
     }

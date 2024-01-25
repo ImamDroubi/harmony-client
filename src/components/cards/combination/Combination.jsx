@@ -1,4 +1,4 @@
-import React, {useState } from 'react'
+import React, {useEffect, useState } from 'react'
 import "./combination.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faPlay,faEllipsis,faClone,faGlobe,faUser,faHeart as solidHeart,faPenToSquare,faXmark,faPause,faUserSecret} from "@fortawesome/free-solid-svg-icons";
@@ -26,6 +26,17 @@ export default function Combination({combination}) {
   const [cloneWarningPopup,setCloneWarningPopup] = useState(false);
   const [tracks,setTracks] = useState(combination.tracks);
   const [likes,setLikes]= useState(combination.likes);
+  useEffect(()=>{
+    const reformedTracks = combination.Tracks?.map(item=>{
+      return {
+        volume : item.Tracks_Combination.volume, 
+        ...item
+      }
+    })
+    combination.user = combination.User;
+    setTracks(reformedTracks);
+  },[combination])
+
   const combinationStyles = {
     backgroundImage : `url(${combination.photoUrl || combinationDefaultPhoto})`,
     backgroundSize : 'cover',
@@ -42,6 +53,9 @@ export default function Combination({combination}) {
   const publishCombination =<FontAwesomeIcon icon={faGlobe} />;
   const unpublishCombination =<FontAwesomeIcon icon={faUserSecret} />
   const cloneCombination = <FontAwesomeIcon icon={faClone} />
+  // reform the combination 
+
+
   const handleDeleteCombination = ()=>{
     setWarningPopupOpen(true);
     setOptionsMenuOpen(false);
@@ -79,7 +93,7 @@ export default function Combination({combination}) {
     setOptionsMenuOpen(false);
   }
   const handlePlayCombination = ()=>{
-    tracks.map(track=>{
+    tracks?.map(track=>{
       let sound = document.getElementById(`track${track.id}-combination${combination.id}`);
       sound.volume = track.volume/100;
       sound.muted = track.muted ;
@@ -89,7 +103,7 @@ export default function Combination({combination}) {
     setIsPaused(false);
   }
   const handlePauseCombination = ()=>{
-    tracks.map(track=>{
+    tracks?.map(track=>{
       let sound = document.getElementById(`track${track.id}-combination${combination.id}`);
       sound.pause();
     })
@@ -120,7 +134,7 @@ export default function Combination({combination}) {
       {unpublishWarningPopup && <Warning openPopup={setUnpublishWarningPopup} text='Are You sure you want to unpublish this combination?' confirm={unpublishConfirmed}/>}
       {cloneWarningPopup && <Warning openPopup={setCloneWarningPopup} text='Are You sure you want to clone this Combination?' confirm={cloneConfirmed}/>}
       {tracks?.map((track,ind)=>{
-        return <audio key={ind} id={`track${track.id}-combination${combination.id}`} src={`${track.url}`}></audio>
+        return <audio key={track.id} id={`track${track.id}-combination${combination.id}`} src={`${track.url}`}></audio>
       })}
       <OverlayDark/>
       <div onClick={()=>setOptionsMenuOpen((prev)=>!prev)} className="options">{optionsDots}</div>
