@@ -60,7 +60,7 @@ export default function EditProfile() {
                 {!imageUploading&&<label htmlFor='profile-picture'>Upload</label>}</>}
               </div>
               <h2 className='name'>John Doe</h2>
-              <p className='followers'>55 followers</p>
+              <p className='followers'>0 followers</p>
             </div>
           </div>
           <div className="right">

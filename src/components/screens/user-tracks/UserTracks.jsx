@@ -16,12 +16,6 @@ export default function UserTracks() {
   const [visibleTracks,setVisibleTracks] = useState(0);
   const [tracks,setTracks] = useState([]);
   const [currentCategory,setCurrentCategory] = useState();
-  const handleCategoryChange = (e)=>{
-    setCurrentCategory(e.target.value);
-  }
-  const categories = [
-    "Nature","Animals","Night"
-  ]
   const uploadTrack = <FontAwesomeIcon icon={faUpload} />;
 
   const{isPending, isError,isSuccess, data, error} = useQuery({ // data here contains tracks
@@ -47,14 +41,13 @@ export default function UserTracks() {
   useEffect(()=>{
     setTracks(data?.data);
   },[isSuccess])
-
   useEffect(()=>{
-    {tracks.map((track)=>{
+    {tracks?.map((track)=>{
       if(!currentCategory || currentCategory === "All" || currentCategory === track.category){
         setVisibleTracks(prev=>prev+1);
       }
     })}
-  },[currentCategory])
+  },[currentCategory,tracks]);
   if(!user)return "Loading...";
   if(isPending || isPending_categories) return "Loading...";
   if(isError) return `Error: ${error.message}`

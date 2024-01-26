@@ -9,7 +9,7 @@ import {useAuth} from "../../../contexts/AuthContext";
 import {getFileRef, uploadFileResumable } from '../../../apiCalls/uploadFile';
 import {CircularProgress, LinearProgress } from '@mui/material';
 import { deleteObject, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 export default function UploadTrack({openPopup}) {
   const {currentUser} = useAuth()
@@ -26,8 +26,8 @@ export default function UploadTrack({openPopup}) {
   const [trackUploading, setTrackUploading] = useState(false);
   const [trackUploadProgress,setTrackUploadProgress] = useState(0);
   const [trackDuration,setTrackDuration] = useState(0);
-
   const [formSubmitting, setFormSubmitting] = useState(false);
+  const queryClient = useQueryClient();
 
   useEffect(()=>{
     uploadImage();
@@ -122,6 +122,7 @@ export default function UploadTrack({openPopup}) {
   },[trackUrl])
 
   const createTrack = useMutation({
+    queryKey: ["tracks"],
     mutationFn : (payload)=>{
       return axios.post(`/tracks`, payload);
     },
@@ -131,8 +132,7 @@ export default function UploadTrack({openPopup}) {
     onError:(error,variables,context)=>{
       console.log(error);
     },
-    onSuccess:(data,variables,context)=>{
-      
+    onSuccess:async (data,variables,context)=>{
       console.log("Created Successfully");
       postSubmission();
     }

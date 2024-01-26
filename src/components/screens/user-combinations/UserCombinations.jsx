@@ -90,7 +90,7 @@ export default function UserCombinations() {
         <div className="combinations">
           {combinations?.map(comb=>{
             
-            return !currentCategory || currentCategory === "All" || comb.category === currentCategory?<Combination combination={comb}/>:null
+            return !currentCategory || currentCategory === "All" || comb.category === currentCategory?<Combination key={comb.id} combination={comb}/>:null
           })}
         </div>
       </ContainerWide>

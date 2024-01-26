@@ -35,6 +35,7 @@ export default function Combination({combination}) {
     })
     combination.user = combination.User;
     setTracks(reformedTracks);
+    setLikes(combination.likes)
   },[combination])
 
   const combinationStyles = {
