@@ -9,7 +9,7 @@ import MenuDropdown from '../../menus/dropdown/MenuDropdown';
 import Warning from '../../popups/warning/Warning';
 import EditTrack from '../../popups/edit-track/EditTrack';
 
-export default function TrackFlexible({track,volume=50,removeFromMixing}) {
+export default function TrackFlexible({outsider, track,volume=50,removeFromMixing}) {
   const [currentVolume,setCurrentVolume] = useState(volume);
   const [isPaused,setIsPaused] = useState(true);
   const [isMuted,setIsMuted] = useState(false);
@@ -116,7 +116,7 @@ export default function TrackFlexible({track,volume=50,removeFromMixing}) {
       <OverlayDark />
       <audio ref={audioRef} id={`sound${track.id}`} src={track.url}></audio> 
       {/* Remove the id  */}
-      <div onClick={handleOpenOptionsMenu} className="options">{optionsDots}</div>
+      {!outsider && <div onClick={handleOpenOptionsMenu} className="options">{optionsDots}</div>}
       {optionsMenuOpen && <MenuDropdown list={optionsList} />}
       <div className="left">
         <h4>{track.name}</h4>

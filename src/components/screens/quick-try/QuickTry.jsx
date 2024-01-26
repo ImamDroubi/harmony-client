@@ -20,54 +20,54 @@ export default function QuickTry() {
   const tracks = [
     {
       "id" : "abc1234",
-      "title" : "Ocean",
-      "sound" : ocean_s,
-      "img" : ocean,
+      "name" : "Ocean",
+      "url" : ocean_s,
+      "photoUrl" : ocean,
       "volume" : 50,
       "repeat" : true,
       "mute" : false
     },
     {
       "id" : "abc1235",
-      "title" : "Birds",
-      "sound" : birds_s,
-      "img" : birds,
+      "name" : "Birds",
+      "url" : birds_s,
+      "photoUrl" : birds,
       "volume" : 50,
       "repeat" : true,
       "mute" : false
     },
     {
       "id" : "abc1236",
-      "title" : "Campfire",
-      "sound" : campfire_s,
-      "img" : campfire,
+      "name" : "Campfire",
+      "url" : campfire_s,
+      "photoUrl" : campfire,
       "volume" : 50,
       "repeat" : true,
       "mute" : false
     },
     {
       "id" : "abc1237",
-      "title" : "Thunder",
-      "sound" : thunder_s,
-      "img" : thunder,
+      "name" : "Thunder",
+      "url" : thunder_s,
+      "photoUrl" : thunder,
       "volume" : 50,
       "repeat" : true,
       "mute" : false
     },
     {
       "id" : "abc1238",
-      "title" : "Waterfall",
-      "sound" : waterfall_s,
-      "img" : waterfall,
+      "name" : "Waterfall",
+      "url" : waterfall_s,
+      "photoUrl" : waterfall,
       "volume" : 50,
       "repeat" : true,
       "mute" : false
     },
     {
       "id" : "abc1239",
-      "title" : "Rain",
-      "sound" : rain_s,
-      "img" : rain,
+      "name" : "Rain",
+      "url" : rain_s,
+      "photoUrl" : rain,
       "volume" : 50,
       "repeat" : true,
       "mute" : false
@@ -85,7 +85,7 @@ export default function QuickTry() {
         <div className="tracks">
           {
             tracks.map((track)=>{
-              return <TrackFlexible track={track} key={track.id}/>
+              return <TrackFlexible outsider={true} track={track} key={track.id}/>
             })
           }
         </div>
